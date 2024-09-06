@@ -1,0 +1,19 @@
+.bold {
+  font-weight: bold;
+}
+
+.color-atc {
+  color: #051c60;
+}
+
+.color-atc:hover {
+  color: #425691;
+}
+
+.color-btn-atc {
+  background-color: #051c60;
+}
+
+.color-btn-atc:hover {
+  background-color: #425691;
+}
