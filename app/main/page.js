@@ -22,7 +22,9 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
+import { Typography } from "@material-tailwind/react";
 import Container from '../components/Container/Container'
+import "./page.css"
 
 const products = [
   { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -176,6 +178,11 @@ export default function Main() {
       <div>
         <Container />
       </div>
+      <footer className="ejemplo flex w-full flex-row flex-wrap items-center justify-center gap-y-6 gap-x-12 border-t border-blue-gray-50 py-6 text-center md:justify-between h-8 bg-gray-100 text-black">
+        <Typography color="blue-gray" className="font-normal">
+          &copy; 2024 A Todo Color
+        </Typography>
+      </footer>
     </>
   )
 }
