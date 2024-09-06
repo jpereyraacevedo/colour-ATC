@@ -22,6 +22,7 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
+import Container from '../components/Container/Container'
 
 const products = [
   { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -173,7 +174,7 @@ export default function Main() {
         </Dialog>
       </header>
       <div>
-        <h2 className="text-gray-900 text-center text-2xl">Seleccione el color que desea presupuestar</h2>
+        <Container />
       </div>
     </>
   )
