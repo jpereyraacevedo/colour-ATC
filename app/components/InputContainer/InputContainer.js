@@ -1,40 +1,12 @@
 import react from "react"
 import { TEInput } from "tw-elements-react";
+import Input from "../Input/Input";
 
-export default function () {
+export default function InputContainer ({name}) {
     return (
         <div className="py-10">
-            <TEInput
-                className="my-2"
-                type="text"
-                id="exampleFormControlInputText"
-            ></TEInput>
-            <hr />
-            <TEInput
-                className="my-2"
-                type="text"
-                id="exampleFormControlInputText"
-            ></TEInput>
-            <TEInput
-                className="my-2"
-                type="text"
-                id="exampleFormControlInputText"
-            ></TEInput>
-            <TEInput
-                className="my-2"
-                type="text"
-                id="exampleFormControlInputText"
-            ></TEInput>
-            <TEInput
-                className="my-2"
-                type="text"
-                id="exampleFormControlInputText"
-            ></TEInput>
-            <TEInput
-                className="my-2"
-                type="text"
-                id="exampleFormControlInputText"
-            ></TEInput>
+            <h2 className="my-2">Presupuesto para {name}</h2>
+           <Input input={name} />
         </div>
     )
 }
