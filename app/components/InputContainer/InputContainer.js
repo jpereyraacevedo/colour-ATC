@@ -10,7 +10,6 @@ export default function InputContainer({ name }) {
 
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
-        console.log (inputValue)
     };
 
     const items = [
@@ -21,8 +20,8 @@ export default function InputContainer({ name }) {
 
     return (
         <>
-            <div className="py-10">
-                <h2 className="my-2">Presupuesto para {name}</h2>
+            <div className="pb-10">
+                <h2 className="my-2 text-3xl text-center text-black">{name}</h2>
                 <label>
                     <input
                         className="rounded input-design my-2"
@@ -30,6 +29,7 @@ export default function InputContainer({ name }) {
                         value={inputValue}
                         onChange={handleInputChange} />
                 </label>
+                <hr />
                 <ul>
                     {items.map(item => (
                         <li key={item.id}><Input input={item.name} /></li>
