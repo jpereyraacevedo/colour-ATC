@@ -1,8 +1,14 @@
 import react from "react"
+import "./Input.css"
 
 
-export default function Input ({input}) {
+export default function Input({ input }) {
+
     return (
-        <input placeholder={input} className="border rounded my-2" />
+        <>
+            <div className="rounded inputs bg-white my-2">
+                <p>{input} </p>
+            </div>
+        </>
     )
 }

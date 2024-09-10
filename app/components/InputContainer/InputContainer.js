@@ -1,12 +1,41 @@
-import react from "react"
-import { TEInput } from "tw-elements-react";
+import react, { useState } from "react"
 import Input from "../Input/Input";
+import "./InputContainer.css"
 
-export default function InputContainer ({name}) {
+
+export default function InputContainer({ name }) {
+
+
+    const [inputValue, setInputValue] = useState('');
+
+    const handleInputChange = (event) => {
+        setInputValue(event.target.value);
+        console.log (inputValue)
+    };
+
+    const items = [
+        { id: 1, name: 'Verde' },
+        { id: 2, name: 'Rojo' },
+        { id: 3, name: 'Azul' },
+    ];
+
     return (
-        <div className="py-10">
-            <h2 className="my-2">Presupuesto para {name}</h2>
-           <Input input={name} />
-        </div>
+        <>
+            <div className="py-10">
+                <h2 className="my-2">Presupuesto para {name}</h2>
+                <label>
+                    <input
+                        className="rounded input-design my-2"
+                        type="text"
+                        value={inputValue}
+                        onChange={handleInputChange} />
+                </label>
+                <ul>
+                    {items.map(item => (
+                        <li key={item.id}><Input input={item.name} /></li>
+                    ))}
+                </ul>
+            </div>
+        </>
     )
 }
