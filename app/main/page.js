@@ -22,7 +22,6 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
-import { Typography } from "@material-tailwind/react";
 import Container from '../components/Container/Container'
 import "./page.css"
 
@@ -43,10 +42,12 @@ export default function Main() {
 
   return (
     <>
-      <header className="bg-white">
-        <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
+      <header className="bg-white shadow-[0_10px_15px_-3px_rgb(248,87,120)]">
+        <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between lg:px-8">
           <div className="flex lg:flex-1">
-            <img alt="" src="https://atodocolor.com.ar/img/cms/logo_footer.png" className="h-12 w-auto" />
+            <a>
+              <img alt="" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGgXWeSUM0IMB79aO490Eci8ORFVrqKDYwHw&s" className="logo" />
+            </a>
           </div>
           <div className="flex lg:hidden">
             <button
@@ -98,15 +99,15 @@ export default function Main() {
                 </div>
               </PopoverPanel>
             </Popover>
-            <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+            <a href="#" className="text-sm font-semibold leading-6 nav-links border-b-2 border-white hover:border-[#f85778]">
               Realizar otro presupuesto
             </a>
-            <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+            <a href="#" className="text-sm font-semibold leading-6 nav-links border-b-2 border-white hover:border-[#f85778]">
               Enviar los presupuestos
             </a>
           </PopoverGroup>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+            <a href="#" className="text-sm font-semibold leading-6 nav-links">
               Cerrar sesion <span aria-hidden="true">&rarr;</span>
             </a>
           </div>
@@ -178,10 +179,10 @@ export default function Main() {
       <div>
         <Container />
       </div>
-      <footer className="ejemplo flex w-full flex-row flex-wrap items-center justify-center gap-y-6 gap-x-12 border-t border-blue-gray-50 py-6 text-center md:justify-between h-8 bg-gray-100 text-black">
-        <Typography color="blue-gray" className="font-normal">
+      <footer className="ejemplo flex w-full flex-col flex-wrap items-center justify-center gap-y-6 gap-x-12 border-t border-blue-gray-50 py-6 md:justify-between h-8 bg-gray-100 text-black">
+        <p className="font-normal footer-text">
           &copy; 2024 A Todo Color
-        </Typography>
+        </p>
       </footer>
     </>
   )

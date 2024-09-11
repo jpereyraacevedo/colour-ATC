@@ -10,7 +10,7 @@ export default function Login() {
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             alt="Logo de A Todo Color"
-            src="https://atodocolor.com.ar/img/cms/logo_footer.png"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGgXWeSUM0IMB79aO490Eci8ORFVrqKDYwHw&s"
             className="mx-auto h-50 w-auto"
           />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">

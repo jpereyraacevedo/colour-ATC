@@ -16,7 +16,12 @@ export default function InputContainer({ name }) {
         { id: 1, name: 'Verde' },
         { id: 2, name: 'Rojo' },
         { id: 3, name: 'Azul' },
-    ];
+        { id: 4, name: 'Naranja' },
+        { id: 5, name: 'Celeste' },
+        { id: 6, name: 'Violeta' },
+    ]; 
+    
+    console.log()
 
     return (
         <>

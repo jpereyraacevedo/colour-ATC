@@ -1,7 +1,21 @@
 .ejemplo {
-    position:fixed;
-    left:0px;
-    bottom:0px;
-    height:30px;
-    width:100%;
- }
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    height: 30px;
+    width: 100%;
+}
+
+.logo {
+    width: 85px;
+    height: 85px;
+}
+
+.nav-links {
+    color:  #0154b8;
+}
+
+.footer-text {
+    text-align: center;
+    color: #0154b8;
+}
