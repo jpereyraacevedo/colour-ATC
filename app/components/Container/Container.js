@@ -5,8 +5,6 @@ import "./Container.css"
 
 export default function () {
 
-
-
     const [mount, setMount] = useState("")
 
     let handleClick = (tipo) => {
