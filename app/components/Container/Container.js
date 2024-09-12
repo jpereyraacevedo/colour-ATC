@@ -15,7 +15,7 @@ export default function () {
     }
 
     return (
-        <section className="px-5 rounded border flex-col max-w-5xl mx-auto mt-5">
+        <section className="px-5 rounded border flex-col max-w-5xl mx-auto mt-5 ">
             <h3 className="text-center text-3xl text-stone-950 p-5">
                 Seleccione lo que desee presupuestar
             </h3>
@@ -25,6 +25,7 @@ export default function () {
                     <Radio name="type" className="radio-btn" label="Automotriz" onClick={() => handleClick("Automotriz")} />
                 </div>
             </div>
+            <hr />
             <div className="flex align-center content-center justify-center">
                 <div>
                     {(mount !== "") ? <InputContainer name={mount} /> : null}

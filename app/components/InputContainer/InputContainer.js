@@ -19,9 +19,8 @@ export default function InputContainer({ name }) {
         { id: 4, name: 'Naranja' },
         { id: 5, name: 'Celeste' },
         { id: 6, name: 'Violeta' },
-    ]; 
-    
-    console.log()
+    ];
+
 
     return (
         <>
@@ -29,10 +28,11 @@ export default function InputContainer({ name }) {
                 <h2 className="my-2 text-3xl text-center text-black">{name}</h2>
                 <label>
                     <input
-                        className="rounded input-design my-2"
+                        className="rounded input-design my-2 bg-slate-300"
                         type="text"
                         value={inputValue}
-                        onChange={handleInputChange} />
+                        onChange={handleInputChange}
+                    />
                 </label>
                 <hr />
                 <ul>

@@ -42,7 +42,7 @@ export default function Main() {
 
   return (
     <>
-      <header className="bg-white shadow-[0_10px_15px_-3px_rgb(248,87,120)]">
+      <header className="bg-white shadow-[0_10px_15px_-3px_rgba(1,82,184,255)]">
         <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between lg:px-8">
           <div className="flex lg:flex-1">
             <a>
