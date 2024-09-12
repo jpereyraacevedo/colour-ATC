@@ -42,8 +42,8 @@ export default function Main() {
 
   return (
     <>
-      <header className="bg-white shadow-[0_10px_15px_-3px_rgba(1,82,184,255)]">
-        <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between lg:px-8">
+      <header className="bg-white shadow-[0_1px_4px_0px_rgba(1,82,184,255)]">
+        <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between lg:px-8 mx-5">
           <div className="flex lg:flex-1">
             <a>
               <img alt="" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGgXWeSUM0IMB79aO490Eci8ORFVrqKDYwHw&s" className="logo" />
@@ -179,7 +179,7 @@ export default function Main() {
       <div>
         <Container />
       </div>
-      <footer className="ejemplo flex w-full flex-col flex-wrap items-center justify-center gap-y-6 gap-x-12 border-t border-blue-gray-50 py-6 md:justify-between h-8 bg-gray-100 text-black">
+      <footer className="ejemplo flex w-full flex-col flex-wrap items-center justify-center gap-y-6 gap-x-12 border-t border-blue-gray-50 py-6 md:justify-between h-8 bg-[#0154b8] text-black">
         <p className="font-normal footer-text">
           &copy; 2024 A Todo Color
         </p>
