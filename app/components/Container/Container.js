@@ -13,8 +13,8 @@ export default function () {
     }
 
     return (
-        <section className="px-5 rounded border flex-col max-w-5xl mx-auto mt-5 ">
-            <h3 className="text-center text-3xl text-stone-950 p-5">
+        <section className="px-5 rounded border flex-col max-w-5xl mx-auto mt-5 bg-white">
+            <h3 className="text-center text-3xl text-[#0154b8] p-5">
                 Seleccione lo que desee presupuestar
             </h3>
             <div className="flex align-center content-center">

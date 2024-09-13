@@ -25,7 +25,7 @@ export default function InputContainer({ name }) {
     return (
         <>
             <div className="pb-10">
-                <h2 className="my-2 text-3xl text-center text-black">{name}</h2>
+                <h2 className="my-2 text-3xl text-center text-[#0154b8]">{name}</h2>
                 <label>
                     <input
                         className="rounded input-design my-2 bg-slate-300"

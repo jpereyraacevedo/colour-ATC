@@ -32,3 +32,9 @@ body {
 * {
   font-family: "Montserrat", sans-serif;
 }
+
+.bg-container {
+  background: rgb(248, 87, 120);
+  background: linear-gradient(130deg, rgba(248, 87, 120, 1) 20%, rgba(1, 84, 184, 1) 100%);
+  background-repeat: no-repeat;
+}
