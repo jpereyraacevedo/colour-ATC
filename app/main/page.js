@@ -99,10 +99,10 @@ export default function Main() {
                 </div>
               </PopoverPanel>
             </Popover>
-            <a href="#" className="text-sm font-semibold leading-6 nav-links border-b-2 border-white hover:border-[#f85778]">
+            <a href="#" className="text-sm font-semibold leading-6 nav-links border-b-2 border-white hover:border-[#f85778] duration-300">
               Realizar otro presupuesto
             </a>
-            <a href="#" className="text-sm font-semibold leading-6 nav-links border-b-2 border-white hover:border-[#f85778]">
+            <a href="#" className="text-sm font-semibold leading-6 nav-links border-b-2 border-white hover:border-[#f85778] duration-300">
               Enviar los presupuestos
             </a>
           </PopoverGroup>
