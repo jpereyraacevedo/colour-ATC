@@ -3,3 +3,12 @@
     color: black;
 }
 
+.search-btn {
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #0154b8;
+}
+
+.search-btn:hover {
+    background-color: rgb(248, 87, 120);
+}
