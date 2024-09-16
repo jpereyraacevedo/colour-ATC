@@ -3,7 +3,7 @@
 }
 
 .color-atc {
-  color: #0154b8;
+  color: white;
 }
 
 .color-atc:hover {
@@ -15,5 +15,6 @@
 }
 
 .color-btn-atc:hover {
-  background-color: #425691;
+  color: #425691;
+  background-color: #d2d7e9;
 }

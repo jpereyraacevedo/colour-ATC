@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="es">
       <head>
-      <link rel="icon" type="image/png" href="/images.png" />
+        <link rel="icon" type="image/png" href="/images.png" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-container h-screen`}

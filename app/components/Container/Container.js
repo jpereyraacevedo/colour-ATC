@@ -8,7 +8,6 @@ export default function () {
     const [mount, setMount] = useState("")
 
     let handleClick = (tipo) => {
-
         setMount(tipo)
     }
 
@@ -19,8 +18,8 @@ export default function () {
             </h3>
             <div className="flex align-center content-center">
                 <div className="flex gap-10 content-center mx-auto my-5">
-                    <Radio name="type" className="radio-btn" label="Linea HOGAR" onClick={() => handleClick("Hogar")} />
-                    <Radio name="type" className="radio-btn" label="Automotriz" onClick={() => handleClick("Automotriz")} />
+                    <Radio name="type" className="radio-btn" label="Linea HOGAR" onClick={() => handleClick("HOGAR")} />
+                    <Radio name="type" className="radio-btn" label="Automotriz" onClick={() => handleClick("AUTOMOTRIZ")} />
                 </div>
             </div>
             <hr />

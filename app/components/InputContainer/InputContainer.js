@@ -1,9 +1,9 @@
 import react, { useState, useEffect } from "react";
-import axios from "axios";
-import "./InputContainer.css";
 import { Card, Typography, Input } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import "./InputContainer.css";
 
 
 export default function InputContainer({ name }) {
@@ -29,7 +29,7 @@ export default function InputContainer({ name }) {
 
     const filterData = (terminoBusqueda) => {
         var resultadosBusqueda = tablaUsuarios.filter((elemento) => {
-            if (elemento.name.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())){
+            if (elemento.name.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())) {
                 return elemento;
             }
         })
@@ -43,7 +43,7 @@ export default function InputContainer({ name }) {
     return (
         <>
             <div className="pb-10">
-                <h2 className="my-2 text-3xl text-center text-[#0154b8]">{name}</h2>
+                <h2 className="my-2 text-3xl text-center text-[#0154b8] bold">{name}</h2>
                 <div className="flex m-2 items-center justify-center">
                     <label>
                         <Input
@@ -54,7 +54,7 @@ export default function InputContainer({ name }) {
                             onChange={handleInputChange}
                         />
                     </label>
-                    <FontAwesomeIcon icon={faSearch} className="mx-3 search-btn" />
+                    <FontAwesomeIcon icon={faSearch} className="mx-3 search-btn duration-100" />
                 </div>
                 <hr />
                 <Card className="h-full w-full" >
@@ -79,7 +79,7 @@ export default function InputContainer({ name }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {(busqueda==="") ? console.log ("BUSQUEDA ESTA VACIO"): null}
+                            {(busqueda === "") ? console.log("BUSQUEDA ESTA VACIO") : null}
                             {usuarios && usuarios.map(usuario => {
 
                                 return (
@@ -126,6 +126,14 @@ export default function InputContainer({ name }) {
                         </tbody>
                     </table>
                 </Card>
+            </div>
+            <div className="flex justify-between py-5">
+                <h4 className="text-[#0154b8] bold">
+                    Total:
+                </h4>
+                <p className="text-[#0154b8] font-bold">
+                    $999,99
+                </p>
             </div>
         </>
     )
