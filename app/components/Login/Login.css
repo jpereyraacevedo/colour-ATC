@@ -7,14 +7,15 @@
 }
 
 .color-atc:hover {
-  color: #425691;
+  color: #0154b8;
 }
 
 .color-btn-atc {
-  background-color: #0154b8;
+  background-color: white;
+  color: #0154b8
 }
 
 .color-btn-atc:hover {
-  color: #425691;
-  background-color: #d2d7e9;
+  color: #F85778;
+  background-color: white;
 }

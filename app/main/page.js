@@ -176,7 +176,7 @@ export default function Main() {
           </DialogPanel>
         </Dialog>
       </header>
-      <div>
+      <div className="mb-5">
         <Container />
       </div>
       {/* <footer className="footer flex w-full flex-col flex-wrap items-center justify-center gap-y-6 gap-x-12 border-t border-blue-gray-50 py-6 md:justify-between h-8 bg-white">

@@ -2,24 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* --background: #0a0a0a; */
-    --foreground: #ededed;
-  }
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}
-
 /* Montserrat */
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
@@ -29,7 +11,7 @@
 }
 
 .bg-container {
-  background: rgb(248, 87, 120);
-  background: linear-gradient(130deg, rgba(248, 87, 120, 1) 20%, rgba(1, 84, 184, 1) 100%);
+  background: #F85778;
+  background: linear-gradient(0deg, #F85778 20%, #0154b8 100%);
   background-repeat: no-repeat;
 }

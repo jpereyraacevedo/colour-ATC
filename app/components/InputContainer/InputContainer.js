@@ -79,7 +79,7 @@ export default function InputContainer({ name }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {(busqueda === "") ? console.log("BUSQUEDA ESTA VACIO") : null}
+                            {(busqueda === "") ? console.log("BUSQUEDA ESTA VACIO") : console.log("El valor de busqueda es " + busqueda)}
                             {usuarios && usuarios.map(usuario => {
 
                                 return (
@@ -88,7 +88,7 @@ export default function InputContainer({ name }) {
                                             <Typography
                                                 variant="small"
                                                 color="blue-gray"
-                                                className="font-normal"
+                                                className="font-normal px-2"
                                             >
                                                 {usuario.name}
                                             </Typography>
@@ -97,7 +97,7 @@ export default function InputContainer({ name }) {
                                             <Typography
                                                 variant="small"
                                                 color="blue-gray"
-                                                className="font-normal"
+                                                className="font-normal px-2"
                                             >
                                                 {usuario.phone}
                                             </Typography>
@@ -106,7 +106,7 @@ export default function InputContainer({ name }) {
                                             <Typography
                                                 variant="small"
                                                 color="blue-gray"
-                                                className="font-normal"
+                                                className="font-normal px-2"
                                             >
                                                 {usuario.username}
                                             </Typography>
@@ -127,7 +127,7 @@ export default function InputContainer({ name }) {
                     </table>
                 </Card>
             </div>
-            <div className="flex justify-between py-5">
+            <div className="flex justify-between py-5 border-t border-blue-gray-100">
                 <h4 className="text-[#0154b8] bold">
                     Total:
                 </h4>
