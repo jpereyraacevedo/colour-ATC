@@ -9,8 +9,18 @@ export default function Login() {
     <>
       <div className="">
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-          <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            <Image src="/images/logo-white.png" alt="Logo" width={300} height={300} unoptimized={true} className="mx-auto animate__animated animate__slideInDown" />
+          <div className="mt-10">
+            <div className="flex justify-center">
+              <div className="animacion-a">
+                <Image src="/images/A.png" alt="Logo" width={100} height={90} unoptimized={true} className=" animate__animated animate__fadeInDown" />
+              </div>
+              <div className="animacion-todo">
+                <Image src="/images/todo.png" alt="Logo" width={357} height={90} unoptimized={true} className="animate__animated animate__fadeInUp" />
+              </div>
+              <div>
+                <Image src="/images/color.png" alt="Logo" width={428} height={90} unoptimized={true} className="animate__animated animate__fadeInDown" />
+              </div>
+            </div>
             <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-200">
               Ingrese su usuario
             </h2>

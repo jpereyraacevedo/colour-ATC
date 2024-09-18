@@ -15,3 +15,11 @@
   color: #F85778;
   background-color: white;
 }
+
+.animacion-a {
+  transform: translateX(25px);
+}
+
+.animacion-todo {
+  transform: translateY(-40px) !important;
+}
