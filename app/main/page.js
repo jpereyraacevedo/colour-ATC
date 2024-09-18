@@ -23,6 +23,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
 import Container from '../components/Container/Container'
+import Footer from "../components/Footer/Footer"
 import "./page.css"
 
 const products = [
@@ -42,7 +43,7 @@ export default function Main() {
 
   return (
     <>
-      <header className="shadow-[0_1px_4px_0px_rgba(1,82,184,255)] bg-white">
+      <header className="shadow-[0_1px_4px_0px_#F85778] bg-white">
         <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between lg:px-8 mx-5">
           <div className="flex lg:flex-1">
             <a>
@@ -179,11 +180,7 @@ export default function Main() {
       <div className="mb-5">
         <Container />
       </div>
-      {/* <footer className="footer flex w-full flex-col flex-wrap items-center justify-center gap-y-6 gap-x-12 border-t border-blue-gray-50 py-6 md:justify-between h-8 bg-white">
-        <p className="font-normal footer-text">
-          &copy; 2024 A Todo Color
-        </p>
-      </footer> */}
+      <Footer />
     </>
   )
 }

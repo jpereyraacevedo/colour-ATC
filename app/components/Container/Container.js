@@ -5,11 +5,12 @@ import "./Container.css"
 
 export default function () {
 
-    const [mount, setMount] = useState("")
+    const [title, setTitle] = useState("")
 
     let handleClick = (tipo) => {
-        setMount(tipo)
+        setTitle(tipo)
     }
+    
 
     return (
         <section className="px-5 rounded border flex-col max-w-5xl mx-auto mt-5 bg-white">
@@ -25,7 +26,7 @@ export default function () {
             <hr />
             <div className="flex align-center content-center justify-center">
                 <div>
-                    {(mount !== "") ? <InputContainer name={mount} /> : null}
+                    {(title !== "") ? (<InputContainer title={title} />) : null}
                 </div>
             </div>
         </section>

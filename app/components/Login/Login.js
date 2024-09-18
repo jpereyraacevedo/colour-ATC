@@ -1,6 +1,7 @@
 "use client"
 import Link from "next/link";
 import Image from "next/image"
+import 'animate.css';
 import "./Login.css"
 
 export default function Login() {
@@ -9,7 +10,7 @@ export default function Login() {
       <div className="">
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            <Image src="/images/logo-white.png" alt="Logo" width={300} height={300} unoptimized={true} className="mx-auto" />
+            <Image src="/images/logo-white.png" alt="Logo" width={300} height={300} unoptimized={true} className="mx-auto animate__animated animate__slideInDown" />
             <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-200">
               Ingrese su usuario
             </h2>

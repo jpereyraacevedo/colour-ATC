@@ -6,7 +6,7 @@ import axios from "axios";
 import "./InputContainer.css";
 
 
-export default function InputContainer({ name }) {
+export default function InputContainer({ title }) {
 
     const [usuarios, setUsuarios] = useState([])
     const [tablaUsuarios, setTablaUsuarios] = useState([])
@@ -43,7 +43,7 @@ export default function InputContainer({ name }) {
     return (
         <>
             <div className="pb-10">
-                <h2 className="my-2 text-3xl text-center text-[#0154b8] bold">{name}</h2>
+                <h2 className="my-2 text-3xl text-center text-[#0154b8] bold">{title}</h2>
                 <div className="flex m-2 items-center justify-center">
                     <label>
                         <Input
@@ -128,7 +128,7 @@ export default function InputContainer({ name }) {
                 </Card>
             </div>
             <div className="flex justify-between py-5 border-t border-blue-gray-100">
-                <h4 className="text-[#0154b8] bold">
+                <h4 className="text-[#0154b8]">
                     Total:
                 </h4>
                 <p className="text-[#0154b8] font-bold">
