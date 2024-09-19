@@ -1,13 +1,14 @@
 "use client"
 import Link from "next/link";
 import Image from "next/image"
+import LoginInput from "../LoginInput/LoginInput"
 import 'animate.css';
 import "./Login.css"
 
 export default function Login() {
   return (
     <>
-      <div className="">
+      <div className="mt-10">
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="mt-10">
             <div className="flex justify-center">
@@ -21,13 +22,10 @@ export default function Login() {
                 <Image src="/images/color.png" alt="Logo" width={428} height={90} unoptimized={true} className="animate__animated animate__fadeInDown" />
               </div>
             </div>
-            <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-200">
-              Ingrese su usuario
-            </h2>
           </div>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form action="#" method="POST" className="space-y-6">
+            {/* <form action="#" method="POST" className="space-y-6">
               <div>
                 <label htmlFor="email" className="block text-sm font-medium leading-6 text-white bold">
                   Nombre de usuario
@@ -74,7 +72,8 @@ export default function Login() {
                   Ingresar
                 </button>
               </div>
-            </form>
+            </form> */}
+            <LoginInput />
           </div>
         </div>
       </div>

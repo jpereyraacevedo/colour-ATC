@@ -1,0 +1,40 @@
+.color-atc {
+  color: white;
+}
+
+.color-atc:hover {
+  color: #0154b8;
+}
+
+.color-btn-atc {
+  background-color: white;
+  color: #0154b8
+}
+
+.color-btn-atc:hover {
+  color: #F85778;
+  background-color: white;
+}
+
+.animacion-a {
+  transform: translateX(25px);
+}
+
+.animacion-todo {
+  transform: translateY(-40px) !important;
+}
+
+/* 
+.animacion-santi {
+  transform: translateY(-100px);
+  animation-duration: 2000ms;
+} */
+
+.input-login {
+  color: #0154b8;
+  font-weight: 700;
+}
+
+.input-password {
+  color: rgb(71, 71, 71);
+}

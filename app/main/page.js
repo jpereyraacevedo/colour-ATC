@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from "next/link";
 import {
   Dialog,
   DialogPanel,
@@ -46,9 +47,9 @@ export default function Main() {
       <header className="shadow-[0_1px_4px_0px_#F85778] bg-white">
         <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between lg:px-8 mx-5">
           <div className="flex lg:flex-1">
-            <a>
+          <Link href="/">
               <img alt="" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGgXWeSUM0IMB79aO490Eci8ORFVrqKDYwHw&s" className="logo" />
-            </a>
+          </Link>
           </div>
           <div className="flex lg:hidden">
             <button
@@ -177,7 +178,7 @@ export default function Main() {
           </DialogPanel>
         </Dialog>
       </header>
-      <div className="mb-5">
+      <div>
         <Container />
       </div>
       <Footer />
