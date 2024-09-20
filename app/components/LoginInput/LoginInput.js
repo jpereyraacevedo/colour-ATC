@@ -5,7 +5,7 @@ import "./LoginInput.css"
 import Link from 'next/link';
 
 const LoginInput = () => {
-  const [username, setUsername] = useState(''); // Cambiar de email a username
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
@@ -26,7 +26,6 @@ const LoginInput = () => {
 
       if (response.ok) {
         localStorage.setItem('token', data.token);
-        alert('Login exitoso');
         router.push('/main');
       } else {
         setError(data.message || 'Error de autenticación');
