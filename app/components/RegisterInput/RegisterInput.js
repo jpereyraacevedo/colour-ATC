@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation'; // Importar useRouter
+import { useRouter } from 'next/navigation';
 import Image from "next/image"
 import Link from 'next/link';
 import 'animate.css';
@@ -11,10 +11,15 @@ const RegisterInput = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const router = useRouter(); // Usar useRouter
+  const router = useRouter();
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    // Validar longitud de la contraseña
+    if (password.length < 5) {
+      return setError('La contraseña debe tener al menos 6 caracteres.');
+    }
+    // Poner mas validaciones 
 
     try {
       const response = await fetch('http://localhost:5000/api/users/register', {
@@ -31,8 +36,12 @@ const RegisterInput = () => {
         // Guardar token en localStorage
         localStorage.setItem('token', data.token);
         alert('Registro exitoso');
-        // Redirigir al usuario a otra página
-        router.push('/login'); // Cambia '/login' a la ruta a la que desees redirigir después del registro
+        // Limpiar el formulario
+        setUsername('');
+        setEmail('');
+        setPassword('');
+        // Redirigir al usuario a la página de inicio de sesión
+        router.push('/'); // Cambia '/login' después del registro
       } else {
         setError(data.message || 'Error de registro');
       }

@@ -1,14 +1,14 @@
 "use client";
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation'; // Importar useRouter
+import { useRouter } from 'next/navigation'; 
 import "./LoginInput.css"
 import Link from 'next/link';
 
 const LoginInput = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState(''); // Cambiar de email a username
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const router = useRouter(); // Usar useRouter
+  const router = useRouter();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -19,17 +19,15 @@ const LoginInput = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, password }), // Enviar username
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        // Guardar token en localStorage
         localStorage.setItem('token', data.token);
         alert('Login exitoso');
-        // Redirigir al usuario a otra página
-        router.push('/main'); // Cambia '/main' a la ruta a la que desees redirigir
+        router.push('/main');
       } else {
         setError(data.message || 'Error de autenticación');
       }
@@ -43,30 +41,28 @@ const LoginInput = () => {
       {error && <p style={{ color: 'white', fontWeight: "700" }}>{error}</p>}
       <form onSubmit={handleLogin}>
         <div className="mt-5">
-          <label htmlFor="text" className="block text-sm font-medium leading-6 text-white font-extrabold">Usuario</label>
+          <label htmlFor="username" className="block text-sm font-medium leading-6 text-white font-extrabold">Usuario</label>
           <input
             type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={username} // Usar username aquí
+            onChange={(e) => setUsername(e.target.value)}
             required
             className="block w-full rounded-md border-0 p-1.5 shadow-sm sm:text-sm sm:leading-6 mt-1 input-login"
           />
         </div>
-        <div className="mt-5">
+        <div className="mt-1">
           <label htmlFor="password" className="block text-sm font-medium leading-6 text-white font-extrabold">Contraseña</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-900 sm:text-sm sm:leading-6 input-password"
+            className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 mt-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-900 sm:text-sm sm:leading-6 input-password"
           />
         </div>
-        <Link href="/main">
-          <button type="submit" className="flex w-full justify-center rounded-md color-btn-atc px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 my-5">
-            Iniciar sesión
-          </button>
-        </Link>
+        <button type="submit" className="flex w-full justify-center rounded-md color-btn-atc px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 my-5">
+          Iniciar sesión
+        </button>
         <Link href="/register" className="text-[#0154b8] flex justify-center font-bold hover:text-white">
           ¿No tienes usuario? Regístrate
         </Link>
