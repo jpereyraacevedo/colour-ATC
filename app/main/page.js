@@ -44,7 +44,7 @@ export default function Main() {
 
   return (
     <>
-      <header className="shadow-[0_1px_4px_0px_#F85778] bg-white">
+      <header className="shadow-[0_1px_4px_0px_#F85778] bg-white px-5">
         <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between lg:px-8 mx-5">
           <div className="flex lg:flex-1">
           <Link href="/">
@@ -63,7 +63,6 @@ export default function Main() {
           </div>
           <PopoverGroup className="hidden lg:flex lg:gap-x-12">
             <Popover className="relative">
-
               <PopoverPanel
                 transition
                 className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"

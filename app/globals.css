@@ -12,6 +12,12 @@
 
 .bg-container {
   background: #F85778;
-  background: linear-gradient(0deg, #F85778 20%, #0154b8 100%);
+  background: linear-gradient(0deg, #F85778 20%, #0154b8 90%);
   background-repeat: no-repeat;
+}
+
+@media screen and (min-width: 400px) and (max-width: 600px) {
+  .container {
+    max-width: 440px;
+  }
 }

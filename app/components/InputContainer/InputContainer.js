@@ -1,44 +1,48 @@
-import react, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Card, Typography, Input } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import { ClassContext } from "../../Context";  // Asegúrate de importar el contexto correctamente
 import "./InputContainer.css";
-
 
 export default function InputContainer({ title }) {
 
-    const [usuarios, setUsuarios] = useState([])
-    const [tablaUsuarios, setTablaUsuarios] = useState([])
-    const [busqueda, setBusqueda] = useState("")
+    const { footerActive } = useContext(ClassContext);  // Usa el método para activar o desactivar el footer
+    const [usuarios, setUsuarios] = useState([]);
+    const [tablaUsuarios, setTablaUsuarios] = useState([]);
+    const [busqueda, setBusqueda] = useState("");
 
     const handleInputChange = (event) => {
-        setBusqueda(event.target.value)
+        setBusqueda(event.target.value);
         filterData(event.target.value);
     };
 
     const getData = async () => {
-        await axios.get("https://jsonplaceholder.typicode.com/users")
-            .then(response => {
-                setUsuarios(response.data);
-                setTablaUsuarios(response.data)
-            }).catch(err => {
-                console.log(err)
-            })
-    }
+        try {
+            const response = await axios.get("https://jsonplaceholder.typicode.com/users");
+            setUsuarios(response.data);
+            setTablaUsuarios(response.data);
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     const filterData = (terminoBusqueda) => {
-        var resultadosBusqueda = tablaUsuarios.filter((elemento) => {
-            if (elemento.name.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())) {
-                return elemento;
-            }
-        })
-        setUsuarios(resultadosBusqueda)
-    }
+        const resultadosBusqueda = tablaUsuarios.filter((elemento) =>
+            elemento.name.toLowerCase().includes(terminoBusqueda.toLowerCase())
+        );
+        setUsuarios(resultadosBusqueda);
+    };
 
     useEffect(() => {
         getData();
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        // Activa o desactiva el footer dependiendo si tablaUsuarios está vacío
+        footerActive(tablaUsuarios.length === 0);
+    }, [tablaUsuarios]);  // Ejecuta esto cada vez que tablaUsuarios cambie
 
     return (
         <>
@@ -57,7 +61,7 @@ export default function InputContainer({ title }) {
                     <FontAwesomeIcon icon={faSearch} className="mx-3 search-btn duration-100" />
                 </div>
                 <hr />
-                <Card className="h-full w-full" >
+                <Card className="h-full w-full">
                     <table className="w-full min-w-max table-auto text-left">
                         <thead>
                             <tr>
@@ -79,62 +83,33 @@ export default function InputContainer({ title }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {(busqueda === "") ? console.log("BUSQUEDA ESTA VACIO") : console.log("El valor de busqueda es " + busqueda)}
-                            {usuarios && usuarios.map(usuario => {
-
-                                return (
-                                    <tr key={usuario.id}>
-                                        <td>
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal px-2"
-                                            >
-                                                {usuario.name}
-                                            </Typography>
-                                        </td>
-                                        <td>
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal px-2"
-                                            >
-                                                {usuario.phone}
-                                            </Typography>
-                                        </td>
-                                        <td>
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal px-2"
-                                            >
-                                                {usuario.username}
-                                            </Typography>
-                                        </td>
-                                        <td>
-                                            <Typography
-                                                as="a"
-                                                href="#"
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-medium"
-                                            />
-                                        </td>
-                                    </tr>
-                                );
-                            })}
+                            {usuarios.map(usuario => (
+                                <tr key={usuario.id}>
+                                    <td>
+                                        <Typography variant="small" color="blue-gray" className="font-normal">
+                                            {usuario.name}
+                                        </Typography>
+                                    </td>
+                                    <td>
+                                        <Typography variant="small" color="blue-gray" className="font-normal">
+                                            {usuario.phone}
+                                        </Typography>
+                                    </td>
+                                    <td>
+                                        <Typography variant="small" color="blue-gray" className="font-normal">
+                                            {usuario.username}
+                                        </Typography>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </Card>
             </div>
-            <div className="flex justify-between py-5 border-t border-blue-gray-100">
-                <h4 className="text-[#0154b8]">
-                    Total:
-                </h4>
-                <p className="text-[#0154b8] font-bold">
-                    $999,99
-                </p>
+            <div className="flex justify-between p-5 border-t border-blue-gray-100">
+                <h4 className="text-[#0154b8]">Total:</h4>
+                <p className="text-[#0154b8] font-bold">$999,99</p>
             </div>
         </>
-    )
+    );
 }

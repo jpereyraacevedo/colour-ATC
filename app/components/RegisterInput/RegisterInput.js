@@ -105,7 +105,7 @@ const RegisterInput = () => {
               Registrarse
             </button>
             <Link href="/" className="text-[#0154b8] font-bold hover:text-white flex justify-center">
-              Volver inicio
+              ¿Ya estas registrado? Volver inicio
             </Link>
           </form>
         </div>
