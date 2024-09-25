@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Card, Typography, Input } from "@material-tailwind/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ClassContext } from "../../Context";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import "./InputContainer.css";
 
 export default function InputContainer({ title }) {
     const { footerActive } = useContext(ClassContext);
-    const [usuarios, setUsuarios] = useState([]);
-    const [tablaUsuarios, setTablaUsuarios] = useState([]);
+    const [pinturas, setPinturas] = useState([]); 
+    const [tablaPinturas, setTablaPinturas] = useState([]);
     const [busqueda, setBusqueda] = useState("");
 
     const handleInputChange = (event) => {
@@ -19,26 +17,26 @@ export default function InputContainer({ title }) {
 
     const getData = async () => {
         try {
-            const response = await axios.get("https://jsonplaceholder.typicode.com/users");
-            setUsuarios(response.data);
-            setTablaUsuarios(response.data);
+            const response = await axios.get("http://localhost:5000/routes/data");
+            setPinturas(response.data);
+            setTablaPinturas(response.data);
         } catch (err) {
             console.log(err);
         }
     };
 
     const filterData = (terminoBusqueda) => {
-        const resultadosBusqueda = tablaUsuarios.filter((elemento) =>
-            elemento.name.toLowerCase().includes(terminoBusqueda.toLowerCase())
+        const resultadosBusqueda = tablaPinturas.filter((elemento) =>
+            elemento.Col.toLowerCase().includes(terminoBusqueda.toLowerCase())
         );
-        setUsuarios(resultadosBusqueda);
+        setPinturas(resultadosBusqueda);
     };
 
     const handleEditableChange = (id, field, value) => {
-        const updatedUsuarios = usuarios.map(usuario =>
-            usuario.id === id ? { ...usuario, [field]: value } : usuario
+        const updatedPinturas = pinturas.map(pintura =>
+            pintura.Id === id ? { ...pintura, [field]: value } : pintura
         );
-        setUsuarios(updatedUsuarios);
+        setPinturas(updatedPinturas);
     };
 
     useEffect(() => {
@@ -46,13 +44,25 @@ export default function InputContainer({ title }) {
     }, []);
 
     useEffect(() => {
-        footerActive(tablaUsuarios.length === 0);
-    }, [tablaUsuarios]);
+        footerActive(tablaPinturas.length === 0);
+    }, [tablaPinturas]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get("http://localhost:5000/routes/data");
+                console.log('Datos recibidos:', response.data);
+            } catch (error) {
+                console.error('Error al obtener los datos:', error);
+            }
+        };
+        fetchData();
+    }, []);
 
     return (
         <div className="pb-10">
             <h2 className="my-2 text-3xl text-center text-[#0154b8] font-bold">{title}</h2>
-            <div className="flex m-2 items-center justify-center">
+            <div className="flex flex-col m-2 items-center justify-center">
                 <label>
                     <Input
                         className="rounded input-design my-2 bg-slate-300"
@@ -62,7 +72,7 @@ export default function InputContainer({ title }) {
                         onChange={handleInputChange}
                     />
                 </label>
-                <FontAwesomeIcon icon={faSearch} className="mx-3 search-btn duration-100" />
+                <h2 className="my-2 text-xl text-center text-[#0154b8] font-bold">Nombre pintura</h2>
             </div>
             <hr />
             <Card className="w-full">
@@ -84,29 +94,29 @@ export default function InputContainer({ title }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {usuarios.map(usuario => (
-                            <tr key={usuario.id}>
+                        {pinturas.map(pintura => (
+                            <tr key={pintura.Id}>
                                 <td>
                                     <Input
                                         type="text"
-                                        value={usuario.name}
-                                        onChange={(e) => handleEditableChange(usuario.id, 'name', e.target.value)}
+                                        value={pintura.Col}
+                                        onChange={(e) => handleEditableChange(pintura.Id, 'Col', e.target.value)}
                                         className="border rounded p-1"
                                     />
                                 </td>
                                 <td>
                                     <Input
                                         type="text"
-                                        value={usuario.phone}
-                                        onChange={(e) => handleEditableChange(usuario.id, 'phone', e.target.value)}
+                                        value={pintura.Cant}
+                                        onChange={(e) => handleEditableChange(pintura.Id, 'Cant', e.target.value)}
                                         className="border rounded p-1"
                                     />
                                 </td>
                                 <td>
-                                    <Typography variant="small" color="blue-gray" className="font-normal">{usuario.username}</Typography>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">${pintura.Precio}</Typography>
                                 </td>
                                 <td>
-                                    <Typography variant="small" color="blue-gray" className="font-normal">1</Typography>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">${pintura.Importe}</Typography>
                                 </td>
                             </tr>
                         ))}
@@ -114,8 +124,7 @@ export default function InputContainer({ title }) {
                 </table>
             </Card>
             <div className="flex justify-between p-5 border-t border-blue-gray-100">
-                <h4 className="text-[#0154b8]">Total:</h4>
-                <p className="text-[#0154b8] font-bold">$999,99</p>
+                
             </div>
         </div>
     );
