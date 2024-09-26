@@ -16,8 +16,4 @@
   background-repeat: no-repeat;
 }
 
-@media screen and (min-width: 400px) and (max-width: 600px) {
- .input-size {
-  background-color: blue;
- }
-}
+@media screen and (min-width: 400px) and (max-width: 600px) {}

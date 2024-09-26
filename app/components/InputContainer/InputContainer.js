@@ -9,28 +9,36 @@ export default function InputContainer({ title }) {
     const [pinturas, setPinturas] = useState([]);
     const [tablaPinturas, setTablaPinturas] = useState([]);
     const [busqueda, setBusqueda] = useState("");
+    const [hasSearched, setHasSearched] = useState(false); // Estado para controlar si el usuario ha buscado
 
     const handleInputChange = (event) => {
-        setBusqueda(event.target.value);
-        filterData(event.target.value);
+        const value = event.target.value;
+        setBusqueda(value);
+        setHasSearched(true); // Marcar como que el usuario ha buscado
     };
 
     const getData = async () => {
         try {
             const response = await axios.get("http://localhost:5000/routes/data");
-            setPinturas(response.data);
-            setTablaPinturas(response.data);
+            setTablaPinturas(response.data); // Guardamos los datos originales
         } catch (err) {
             console.log(err);
         }
     };
 
-    const filterData = (terminoBusqueda) => {
-        const resultadosBusqueda = tablaPinturas.filter((elemento) =>
-            elemento.Col.toLowerCase().includes(terminoBusqueda.toLowerCase())
-        );
-        setPinturas(resultadosBusqueda);
-    };
+    // Filtramos los datos de la búsqueda
+    useEffect(() => {
+        if (busqueda.trim() === "") {
+            // Si no hay búsqueda, no mostramos nada si el usuario ha buscado algo antes
+            setPinturas([]);
+        } else {
+            // Filtramos los datos según la búsqueda
+            const resultadosBusqueda = tablaPinturas.filter((elemento) =>
+                elemento.Col.toLowerCase().includes(busqueda.toLowerCase())
+            );
+            setPinturas(resultadosBusqueda);
+        }
+    }, [busqueda, tablaPinturas]);
 
     const handleEditableChange = (id, field, value) => {
         const updatedPinturas = pinturas.map(pintura =>
@@ -44,11 +52,11 @@ export default function InputContainer({ title }) {
     }, []);
 
     useEffect(() => {
-        footerActive(tablaPinturas.length === 0);
-    }, [tablaPinturas]);
+        footerActive(pinturas.length === 0);
+    }, [pinturas]);
 
-    // Asegurarse de que siempre haya al menos 6 filas
-    const minRows = 6;
+    // Asegurarse de que siempre haya al menos 8 filas
+    const minRows = 8;
     const emptyRows = minRows - pinturas.length > 0 ? new Array(minRows - pinturas.length).fill({}) : [];
 
     return (
@@ -68,6 +76,7 @@ export default function InputContainer({ title }) {
             </div>
             <hr />
             <Card className="w-full">
+                {/* Encabezado fijo siempre visible */}
                 <div className="grid grid-cols-4 gap-4 text-left p-2">
                     <div className="font-bold text-[#0154b8]">Col</div>
                     <div className="font-bold text-[#0154b8]">Cantidad</div>
@@ -76,48 +85,52 @@ export default function InputContainer({ title }) {
                 </div>
                 <hr />
                 <div>
-                    {[...pinturas, ...emptyRows].map((pintura, index) => (
-                        <div
-                            className={`grid grid-cols-4 gap-4 p-2 items-center zebra-row ${index % 2 === 0 ? 'bg-white' : 'bg-gray-200'}`}
-                            key={pintura.Id || index} // Usar el índice para filas vacías
-                            style={{ minHeight: "45px" }} // Ajusta esta altura según necesites
-                        >
-                            <div>
-                                {pintura.Id ? (
-                                    <Input
-                                        type="text"
-                                        value={pintura.Col || ""}
-                                        onChange={(e) => handleEditableChange(pintura.Id, "Col", e.target.value)}
-                                        className={`border rounded p-1 ${index % 2 !== 0 ? 'input-gray' : ''}`}
-                                    />
-                                ) : (
-                                    <div style={{ minHeight: "35px" }}></div>  // Placeholder para mantener la altura
-                                )}
+                    {hasSearched && pinturas.length === 0 ? (
+                        <div className="p-2 text-center text-gray-500">No se encontraron resultados</div>
+                    ) : (
+                        [...pinturas, ...emptyRows].map((pintura, index) => (
+                            <div
+                                className={`grid grid-cols-4 gap-4 p-2 items-center zebra-row ${index % 2 === 0 ? 'bg-white' : 'bg-gray-200'}`}
+                                key={pintura.Id || index} // Usar el índice para filas vacías
+                                style={{ minHeight: "45px" }} // Ajusta esta altura según necesites
+                            >
+                                <div style={{ minWidth: "120px" }}> {/* Fija el ancho de esta columna */}
+                                    {pintura.Id ? (
+                                        <Input
+                                            type="text"
+                                            value={pintura.Col || ""}
+                                            onChange={(e) => handleEditableChange(pintura.Id, "Col", e.target.value)}
+                                            className={`text-[#0154b8] border rounded p-1 ${index % 2 !== 0 ? 'input-gray' : ''}`}
+                                        />
+                                    ) : (
+                                        <div style={{ minHeight: "35px", minWidth: "120px" }}></div>  // Placeholder con el mismo ancho
+                                    )}
+                                </div>
+                                <div style={{ minWidth: "100px" }}> {/* Fija el ancho de esta columna */}
+                                    {pintura.Id ? (
+                                        <Input
+                                            type="text"
+                                            value={pintura.Cant || ""}
+                                            onChange={(e) => handleEditableChange(pintura.Id, "Cant", e.target.value)}
+                                            className={`text-[#0154b8] border rounded p-1 ${index % 2 !== 0 ? 'input-gray' : ''}`}
+                                        />
+                                    ) : (
+                                        <div style={{ minHeight: "35px", minWidth: "100px" }}></div>  // Placeholder con el mismo ancho
+                                    )}
+                                </div>
+                                <div style={{ minWidth: "100px" }}> {/* Fija el ancho de esta columna */}
+                                    <Typography variant="small" className="font-bold text-[#0154b8]">
+                                        {pintura.Precio ? `$${pintura.Precio}` : ""}
+                                    </Typography>
+                                </div>
+                                <div style={{ minWidth: "100px" }}> {/* Fija el ancho de esta columna */}
+                                    <Typography variant="small" className="font-bold text-[#0154b8]">
+                                        {pintura.Importe ? `$${pintura.Importe}` : ""}
+                                    </Typography>
+                                </div>
                             </div>
-                            <div>
-                                {pintura.Id ? (
-                                    <Input
-                                        type="text"
-                                        value={pintura.Cant || ""}
-                                        onChange={(e) => handleEditableChange(pintura.Id, "Cant", e.target.value)}
-                                        className={`border rounded p-1 ${index % 2 !== 0 ? 'input-gray' : ''}`}
-                                    />
-                                ) : (
-                                    <div style={{ minHeight: "35px" }}></div>  // Placeholder para mantener la altura
-                                )}
-                            </div>
-                            <div>
-                                <Typography variant="small" color="blue-gray" className="font-bold">
-                                    {pintura.Precio ? `$${pintura.Precio}` : ""}
-                                </Typography>
-                            </div>
-                            <div>
-                                <Typography variant="small" color="blue-gray" className="font-bold">
-                                    {pintura.Importe ? `$${pintura.Importe}` : ""}
-                                </Typography>
-                            </div>
-                        </div>
-                    ))}
+                        ))
+                    )}
                 </div>
             </Card>
             <div className="flex justify-between p-5 border-t border-blue-gray-100">
