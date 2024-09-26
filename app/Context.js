@@ -7,7 +7,7 @@ export const ClassProvider = ({ children }) => {
   const [isActive, setIsActive] = useState(true);
 
   const footerActive = (active) => {
-    setIsActive(active);
+    // setIsActive(active);
   };
 
   return (

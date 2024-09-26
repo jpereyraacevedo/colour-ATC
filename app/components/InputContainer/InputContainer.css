@@ -15,3 +15,37 @@
 .search-btn:hover {
     background-color: #F85778;
 }
+
+.input-size {
+    background-color: red;
+    max-width: 106px
+}
+
+@media screen and (min-width: 400px) and (max-width: 600px) {
+    .input-size {
+        background-color: blue;
+        width: 106px !important;
+    }
+
+    .clase-testeo {
+        width: 106px !important;
+        overflow: hidden;
+    }
+}
+
+/* Aplicar zebra stripes a las filas alternadas */
+.zebra-row:nth-child(odd) {
+    background-color: #ffffff;
+    /* Fondo blanco para filas impares */
+}
+
+.zebra-row:nth-child(even) {
+    background-color: #83adf5;
+    /* Fondo gris claro para filas pares */
+}
+
+/* Estilo para los inputs con fondo gris */
+.input-gray {
+    color: rgb(55, 55, 55);
+    /* Texto negro */
+}
