@@ -8,7 +8,7 @@ export default function InputContainer({ title }) {
     const { footerActive } = useContext(ClassContext);
     const [pinturas, setPinturas] = useState([]);
     const [tablaPinturas, setTablaPinturas] = useState([]);
-    const [busqueda, setBusqueda] = useState(" ");
+    const [busqueda, setBusqueda] = useState("");
     const [hasSearched, setHasSearched] = useState(false); // Estado para controlar si el usuario ha buscado
 
     const handleInputChange = (event) => {
