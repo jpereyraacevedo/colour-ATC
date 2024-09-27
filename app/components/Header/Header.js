@@ -18,7 +18,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <header className="shadow-[0_1px_4px_0px_#F85778] bg-white px-5">
+    <header className="shadow-[0_1px_4px_0px_#fc5273] bg-white px-5">
       <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between lg:px-8 mx-5">
         <div className="flex lg:flex-1">
           <Link href="/">
@@ -43,10 +43,10 @@ export default function Header() {
             >
             </PopoverPanel>
           </Popover>
-          <a href="#" className="text-sm font-semibold leading-6 nav-links border-b-2 border-white hover:border-[#f85778] duration-300">
+          <a href="#" className="text-sm font-semibold leading-6 nav-links border-b-2 border-white hover:border-[#fc5273] duration-300">
             Realizar otro presupuesto
           </a>
-          <a href="#" className="text-sm font-semibold leading-6 nav-links border-b-2 border-white hover:border-[#f85778] duration-300">
+          <a href="#" className="text-sm font-semibold leading-6 nav-links border-b-2 border-white hover:border-[#fc5273] duration-300">
             Enviar los presupuestos
           </a>
         </PopoverGroup>

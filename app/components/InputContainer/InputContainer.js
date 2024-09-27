@@ -4,7 +4,7 @@ import { ClassContext } from "../../Context";
 import axios from "axios";
 import "./InputContainer.css"; // Asegúrate de agregar los estilos nuevos aquí.
 
-export default function InputContainer({ title }) {
+export default function InputContainer() {
     const { footerActive } = useContext(ClassContext);
     const [pinturas, setPinturas] = useState([]);
     const [tablaPinturas, setTablaPinturas] = useState([]);
@@ -63,7 +63,7 @@ export default function InputContainer({ title }) {
 
     return (
         <div className="mb-10 ancho-minimo">
-            <h2 className="my-2 text-3xl text-center text-[#0154b8] font-bold">{title}</h2>
+            <h2 className="my-2 mt-10 text-3xl text-center text-[#0154b8] font-bold">OBRA</h2>
             <div className="flex flex-col m-2 items-center justify-center">
                 <label>
                     <Input
@@ -74,7 +74,7 @@ export default function InputContainer({ title }) {
                         onChange={handleInputChange}
                     />
                 </label>
-                <h2 className="my-2 text-xl text-center text-[#0154b8] font-bold">{busqueda}</h2>
+                <h2 className="my-2 text-xl text-center text-[#0154b8] font-bold">{busqueda === "" ? " No ha ingresado ningún color" : busqueda}</h2>
             </div>
             <hr />
             <Card className="w-full">
@@ -137,8 +137,8 @@ export default function InputContainer({ title }) {
             </Card>
             <div className="flex justify-between p-5 border-t border-blue-gray-100 text-[#0154b8]">
                 <div className="flex flex-col">
-                    <p className="font-bold">Importe colorante</p>
                     <p className="font-bold">Importe base</p>
+                    <p className="font-bold">Importe colorante</p>
                     <p className="font-bold">Importe TOTAL</p>
                 </div>
                 <div className="flex flex-col">

@@ -23,7 +23,6 @@
 }
 
 .zebra-row:nth-child(even) {
-    
     background-color: #ffffff;
     /* Fondo gris claro para filas pares */
 }
