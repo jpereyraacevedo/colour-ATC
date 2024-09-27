@@ -3,11 +3,13 @@
 @tailwind utilities;
 
 /* Montserrat */
-
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap'); 
+/* Roboto */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 * {
-  font-family: "Montserrat", sans-serif;
+  /* font-family: "Montserrat", sans-serif; */
+  font-family: 'Roboto', sans-serif; 
 }
 
 .bg-container {
@@ -15,5 +17,3 @@
   background: linear-gradient(0deg, #F85778 20%, #0154b8 90%);
   background-repeat: no-repeat;
 }
-
-@media screen and (min-width: 400px) and (max-width: 600px) {}

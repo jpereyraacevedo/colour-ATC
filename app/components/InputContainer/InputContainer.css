@@ -5,6 +5,17 @@
     font-weight: 700;
 }
 
+.ancho-minimo {
+    min-height: 700px !important;
+}
+
+@media (min-width: 900px) {
+    .ancho-minimo {
+        width: 900px !important;
+        
+    }
+}
+
 /* Aplicar zebra stripes a las filas alternadas */
 .zebra-row:nth-child(odd) {
     background-color: #a7bcf0;
