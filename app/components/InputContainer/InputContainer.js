@@ -21,10 +21,11 @@ export default function InputContainer() {
     // Esta funcion se conecta al backend
     const getData = async () => {
         try {
-            const response = await axios.get("http://localhost:5000/routes/data");
-            setTablaPinturas(response.data); // Guardamos los datos originales
+            const response = await axios.get("http://localhost:5000/api/data"); // Asegúrate de que esta línea sea correcta
+            setTablaPinturas(response.data);
             console.log("Datos recibidos desde SQL:", response.data);
         } catch (err) {
+            console.error('Error al obtener los datos:', err);
             console.log(err);
         }
     };
