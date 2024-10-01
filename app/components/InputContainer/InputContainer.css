@@ -1,7 +1,7 @@
 .input-design {
     width: 224px;
     color: #0154b8;
-    outline: #0154b8;
+    outline: none; /* Ajuste para evitar borde de outline */
     font-weight: 700;
 }
 
@@ -12,17 +12,19 @@
 @media (min-width: 900px) {
     .ancho-minimo {
         width: 900px !important;
-        
     }
 }
 
-/* Aplicar zebra stripes a las filas alternadas */
+/* Zebra stripes para filas alternadas */
 .zebra-row:nth-child(odd) {
     background-color: #a7bcf0;
-    /* Fondo blanco para filas impares */
 }
 
 .zebra-row:nth-child(even) {
     background-color: #ffffff;
-    /* Fondo gris claro para filas pares */
+}
+
+.desactivado {
+    height: 40px; /* Asegúrate de que el div vacío mantenga la altura */
+    background-color: transparent; /* Fondo transparente */
 }

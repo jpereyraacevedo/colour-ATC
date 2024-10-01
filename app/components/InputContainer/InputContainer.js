@@ -7,7 +7,7 @@ import "./InputContainer.css"; // Asegúrate de agregar los estilos nuevos aquí
 export default function InputContainer() {
     const { footerActive } = useContext(ClassContext);
     const [pinturas, setPinturas] = useState([]);
-    const [tablaPinturas, setTablaPinturas] = useState([]); // Datos originales de la base de datos
+    const [tablaPinturas, setTablaPinturas] = useState([]);
     const [busqueda, setBusqueda] = useState("");
     const [bases, setBases] = useState([]); // Para almacenar las bases coincidentes
     const [selectedBase, setSelectedBase] = useState(null); // Base seleccionada para llenar campos
@@ -16,13 +16,6 @@ export default function InputContainer() {
     const handleInputChange = (event) => {
         const value = event.target.value;
         setBusqueda(value);
-
-        // Si se borra la búsqueda, restablecer el estado
-        if (value === "") {
-            setBases([]);
-            setSelectedBase(null);
-            setHasSearched(false); // No se ha buscado aún
-        }
     };
 
     // Esta funcion se conecta al backend
@@ -61,22 +54,18 @@ export default function InputContainer() {
     // Generar filas vacías para la tabla
     const generarFilasVacias = (num) => {
         return Array.from({ length: num }, (_, index) => (
-            <div key={index} className={`grid grid-cols-4 gap-4 p-2 items-center zebra-row`}>
+            <div key={index} className="grid grid-cols-4 gap-4 p-2 items-center zebra-row">
                 <div style={{ minWidth: "120px" }}>
-                    <div className="text-[#0154b8] border rounded p-1" style={{ height: "30px" }} />
+                    <div className="desactivado" />
                 </div>
                 <div style={{ minWidth: "100px" }}>
-                    <div className="text-[#0154b8] border rounded p-1" style={{ height: "30px" }} />
+                    <div className="desactivado" />
                 </div>
                 <div style={{ minWidth: "100px" }}>
-                    <Typography variant="small" className="font-bold text-[#0154b8]">
-                        {""}
-                    </Typography>
+                    <div className="desactivado" />
                 </div>
                 <div style={{ minWidth: "100px" }}>
-                    <Typography variant="small" className="font-bold text-[#0154b8]">
-                        {""}
-                    </Typography>
+                    <div className="desactivado" />
                 </div>
             </div>
         ));
@@ -110,26 +99,35 @@ export default function InputContainer() {
             <hr />
             <Card className="w-full">
                 {/* Encabezado fijo siempre visible */}
-                <div className="grid grid-cols-4 gap-4 text-left p-2 min-w-full">
-                    <div className="font-bold text-[#0154b8]">Colorante</div>
-                    <div className="font-bold text-[#0154b8]">Cantidad</div>
-                    <div className="font-bold text-[#0154b8]">Precio</div>
-                    <div className="font-bold text-[#0154b8]">Importe</div>
+                <div className="grid grid-cols-4 gap-4 text-left p-2 min-w-full font-bold text-[#0154b8]">
+                    <div>Colorante</div>
+                    <div>Cantidad</div>
+                    <div>Precio</div>
+                    <div>Importe</div>
                 </div>
                 <hr />
                 <div>
-                    {/* Mostrar datos seleccionados o filas vacías */}
                     {selectedBase ? (
                         <div className={`grid grid-cols-4 gap-4 p-2 items-center zebra-row`}>
                             <div style={{ minWidth: "120px" }}>
-                                <div className="text-[#0154b8] border rounded p-1" style={{ height: "30px" }}>
-                                    {selectedBase.Col || ""}
-                                </div>
+                                <Input
+                                    type="text"
+                                    value={selectedBase.Col || ""}
+                                    readOnly
+                                    className="text-[#0154b8] border rounded p-1"
+                                />
                             </div>
                             <div style={{ minWidth: "100px" }}>
-                                <div className="text-[#0154b8] border rounded p-1" style={{ height: "30px" }}>
-                                    {selectedBase.Cant || ""}
-                                </div>
+                                {selectedBase.Cant ? (
+                                    <Input
+                                        type="text"
+                                        value={selectedBase.Cant}
+                                        readOnly
+                                        className="text-[#0154b8] border rounded p-1"
+                                    />
+                                ) : (
+                                    <div className="desactivado" />  // Div vacío para la cantidad
+                                )}
                             </div>
                             <div style={{ minWidth: "100px" }}>
                                 <Typography variant="small" className="font-bold text-[#0154b8]">
