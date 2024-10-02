@@ -1,7 +1,8 @@
 .input-design {
     width: 224px;
     color: #0154b8;
-    outline: none; /* Ajuste para evitar borde de outline */
+    outline: none;
+    /* Ajuste para evitar borde de outline */
     font-weight: 700;
 }
 
@@ -25,6 +26,53 @@
 }
 
 .desactivado {
-    height: 40px; /* Asegúrate de que el div vacío mantenga la altura */
-    background-color: transparent; /* Fondo transparente */
+    height: 40px;
+    background-color: transparent;
+    /* Fondo transparente */
 }
+
+/*** ESTILOS BOTÓN GROW SKEW ***/
+.ov-btn-grow-skew {
+    background: #fff;
+    /* color de fondo */
+    color: #0154b8;
+    /* color de fuente */
+    border: 2px solid #0154b8;
+    /* tamaño y color de borde */
+    padding: 0px 20px;
+    border-radius: 3px;
+    /* redondear bordes */
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.ov-btn-grow-skew:hover {
+    color: #fff;
+    /* color de fuente hover */
+}
+
+.ov-btn-grow-skew::after {
+    content: "";
+    background: #0154b8;
+    /* color de fondo hover */
+    position: absolute;
+    z-index: -1;
+    padding: 16px 20px;
+    display: block;
+    left: -20%;
+    right: -20%;
+    top: 0;
+    bottom: 0;
+    transform: skewX(-45deg) scale(0, 1);
+    transition: all 0.3s ease;
+}
+
+.ov-btn-grow-skew:hover::after {
+    transition: all 0.3s ease-out;
+    transform: skewX(-45deg) scale(1, 1);
+}
+
+
+

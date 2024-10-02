@@ -22,7 +22,7 @@ export default function Header() {
       <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between lg:px-8 mx-5">
         <div className="flex lg:flex-1">
           <Link href="/">
-            <Image src="/images/logo-white.png" alt="Logo" width={100} height={90} unoptimized={true} />
+            <Image src="/images/logo-white.png" alt="Logo" width={100} height={90} unoptimized={true} priority style={{ width: '100px', height: '90px' }} />
           </Link>
         </div>
         <div className="flex lg:hidden">

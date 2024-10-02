@@ -9,13 +9,21 @@ export default function InputContainer() {
     const [pinturas, setPinturas] = useState([]);
     const [tablaPinturas, setTablaPinturas] = useState([]);
     const [busqueda, setBusqueda] = useState("");
-    const [bases, setBases] = useState([]); // Para almacenar las bases coincidentes
-    const [selectedBase, setSelectedBase] = useState(null); // Base seleccionada para llenar campos
+    const [subProductos, setSubProductos] = useState([]); // Para almacenar los subproductos coincidentes
+    const [selectedSubProducto, setSelectedSubProducto] = useState(null); // SubProducto seleccionado para llenar campos
+    const [selectedLitros, setSelectedLitros] = useState(null); // Litros seleccionados
     const [hasSearched, setHasSearched] = useState(false); // Estado para controlar si el usuario ha buscado
 
     const handleInputChange = (event) => {
         const value = event.target.value;
         setBusqueda(value);
+
+        // Si el input de búsqueda está vacío, restablecemos el estado
+        if (value === "") {
+            setSubProductos([]);
+            setSelectedSubProducto(null);
+            setHasSearched(false);
+        }
     };
 
     // Esta funcion se conecta al backend
@@ -23,25 +31,28 @@ export default function InputContainer() {
         try {
             const response = await axios.get("http://localhost:5000/api/data"); // Asegúrate de que esta línea sea correcta
             setTablaPinturas(response.data);
-            console.log("Datos recibidos desde SQL:", response.data);
         } catch (err) {
             console.error('Error al obtener los datos:', err);
             console.log(err);
         }
     };
 
-    // Filtramos los valores de Base al buscar
-    const buscarBases = () => {
+    // Filtramos los valores de SubProducto al buscar
+    const buscarSubProductos = () => {
         const resultadosBusqueda = tablaPinturas.filter((elemento) =>
             elemento.Codigo.toLowerCase() === busqueda.toLowerCase()
         );
-        setBases(resultadosBusqueda.map(item => item.Base)); // Guardamos las bases coincidentes
+        setSubProductos(resultadosBusqueda.map(item => item.SubProducto)); // Guardamos los subproductos coincidentes
         setHasSearched(true); // Marcar que se ha buscado
     };
 
-    const handleBaseSelect = (base) => {
-        const selectedPintura = tablaPinturas.find(item => item.Base === base);
-        setSelectedBase(selectedPintura);
+    const handleSubProductoSelect = (subProducto) => {
+        const selectedPintura = tablaPinturas.find(item => item.SubProducto === subProducto);
+        setSelectedSubProducto(selectedPintura);
+    };
+
+    const handleLitrosSelect = (event) => {
+        setSelectedLitros(event.target.value); // Establecer los litros seleccionados
     };
 
     useEffect(() => {
@@ -85,16 +96,25 @@ export default function InputContainer() {
                         onChange={handleInputChange}
                     />
                 </label>
-                <Button onClick={buscarBases} className="my-2 bg-[#0154b8]">Buscar</Button>
+                <Button onClick={buscarSubProductos} className="my-2 bg-[#0154b8] mx-2 h-[40px] prueba ov-btn-grow-skew">Buscar</Button>
             </div>
-            <div className="flex flex-col m-2 items-center justify-center">
-                {hasSearched && bases.length > 0 && (
-                    <select onChange={(e) => handleBaseSelect(e.target.value)} className="rounded input-design my-2 bg-[#efecec]">
-                        <option value="">Seleccione una base</option>
-                        {bases.map((base, index) => (
-                            <option key={index} value={base}>{base}</option>
-                        ))}
-                    </select>
+            <div className="flex flex-row m-2 items-center justify-center">
+                {hasSearched && subProductos.length > 0 && (
+                    <>
+                        <select onChange={(e) => handleSubProductoSelect(e.target.value)} className="rounded input-design my-2 bg-[#efecec] mx-2 h-[40px]">
+                            <option value="">Seleccione un Producto</option>
+                            {subProductos.map((subProducto, index) => (
+                                <option key={index} value={subProducto}>{subProducto}</option>
+                            ))}
+                        </select>
+                        <select onChange={handleLitrosSelect} className="rounded input-design my-2 bg-[#efecec] mx-2 mx-2 h-[40px]">
+                            <option value="">Seleccione Litros de Base</option>
+                            <option value="3">1 LITRO</option>
+                            <option value="4">4 LITROS</option>
+                            <option value="5">10 LITROS</option>
+                            <option value="6">20 LITROS</option>
+                        </select>
+                    </>
                 )}
             </div>
             <hr />
@@ -108,21 +128,21 @@ export default function InputContainer() {
                 </div>
                 <hr />
                 <div>
-                    {selectedBase ? (
+                    {selectedSubProducto ? (
                         <div className={`grid grid-cols-4 gap-4 p-2 items-center zebra-row`}>
                             <div style={{ minWidth: "120px" }}>
                                 <Input
                                     type="text"
-                                    value={selectedBase.Col || ""}
+                                    value={selectedSubProducto.Col || ""}
                                     readOnly
                                     className="text-[#0154b8] border rounded p-1"
                                 />
                             </div>
                             <div style={{ minWidth: "100px" }}>
-                                {selectedBase.Cant ? (
+                                {selectedSubProducto.Cant ? (
                                     <Input
                                         type="text"
-                                        value={selectedBase.Cant}
+                                        value={selectedSubProducto.Cant}
                                         readOnly
                                         className="text-[#0154b8] border rounded p-1"
                                     />
@@ -132,12 +152,12 @@ export default function InputContainer() {
                             </div>
                             <div style={{ minWidth: "100px" }}>
                                 <Typography variant="small" className="font-bold text-[#0154b8]">
-                                    {selectedBase.CodigoBase3 ? `$${selectedBase.CodigoBase3}` : ""}
+                                    {selectedSubProducto.CodigoBase3 ? `$${selectedSubProducto.CodigoBase3}` : ""}
                                 </Typography>
                             </div>
                             <div style={{ minWidth: "100px" }}>
                                 <Typography variant="small" className="font-bold text-[#0154b8]">
-                                    {selectedBase.CodigoBase3 ? `$${selectedBase.CodigoBase3}` : ""}
+                                    {selectedSubProducto.CodigoBase3 ? `$${selectedSubProducto.CodigoBase3}` : ""}
                                 </Typography>
                             </div>
                         </div>
