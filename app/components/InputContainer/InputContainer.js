@@ -89,7 +89,7 @@ export default function InputContainer() {
             <div className="flex flex-col m-2 items-center justify-center">
                 <label>
                     <Input
-                        className="rounded input-design my-2 bg-[#efecec]"
+                        className="bg-[#fff] px-4 py-3 outline-none w-[220px] text-[#0154b8] font-bold rounded-lg border-2 transition-colors duration-100 border-solid focus:border-[#0154b8] border-[#0154b8]"
                         type="text"
                         value={busqueda}
                         placeholder="Ingrese el código color"
