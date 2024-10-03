@@ -2,68 +2,134 @@ import React, { useState, useEffect, useContext } from "react";
 import { Card, Typography, Input, Button } from "@material-tailwind/react";
 import { ClassContext } from "../../Context";
 import axios from "axios";
-import "./InputContainer.css"; // Asegúrate de agregar los estilos nuevos aquí.
+import "./InputContainer.css";
 
 export default function InputContainer() {
     const { footerActive } = useContext(ClassContext);
-    const [pinturas, setPinturas] = useState([]);
     const [tablaPinturas, setTablaPinturas] = useState([]);
     const [busqueda, setBusqueda] = useState("");
-    const [subProductos, setSubProductos] = useState([]); // Para almacenar los subproductos coincidentes
-    const [selectedSubProducto, setSelectedSubProducto] = useState(null); // SubProducto seleccionado para llenar campos
-    const [selectedLitros, setSelectedLitros] = useState(null); // Litros seleccionados
-    const [hasSearched, setHasSearched] = useState(false); // Estado para controlar si el usuario ha buscado
+    const [subProductos, setSubProductos] = useState([]);
+    const [selectedSubProducto, setSelectedSubProducto] = useState(null);
+    const [selectedLitros, setSelectedLitros] = useState(null);
+    const [hasSearched, setHasSearched] = useState(false);
+    const [coloranteResultados, setColoranteResultados] = useState([]);
+    const [subProductosObjetos, setSubProductosObjetos] = useState([]);
 
     const handleInputChange = (event) => {
         const value = event.target.value;
         setBusqueda(value);
 
-        // Si el input de búsqueda está vacío, restablecemos el estado
         if (value === "") {
             setSubProductos([]);
             setSelectedSubProducto(null);
+            setColoranteResultados([]);
             setHasSearched(false);
         }
     };
 
-    // Esta funcion se conecta al backend
     const getData = async () => {
         try {
-            const response = await axios.get("http://localhost:5000/api/data"); // Asegúrate de que esta línea sea correcta
+            const response = await axios.get("http://localhost:5000/api/data");
             setTablaPinturas(response.data);
         } catch (err) {
             console.error('Error al obtener los datos:', err);
-            console.log(err);
         }
     };
 
-    // Filtramos los valores de SubProducto al buscar
     const buscarSubProductos = () => {
         const resultadosBusqueda = tablaPinturas.filter((elemento) =>
             elemento.Codigo.toLowerCase() === busqueda.toLowerCase()
         );
-        setSubProductos(resultadosBusqueda.map(item => item.SubProducto)); // Guardamos los subproductos coincidentes
-        setHasSearched(true); // Marcar que se ha buscado
+        console.log(resultadosBusqueda);
+        setSubProductos(resultadosBusqueda.map(item => item.SubProducto));
+        setSubProductosObjetos(resultadosBusqueda); 
+        setHasSearched(true);
     };
 
-    const handleSubProductoSelect = (subProducto) => {
-        const selectedPintura = tablaPinturas.find(item => item.SubProducto === subProducto);
+    const handleSubProductoSelect = (subProducto) => {    
+        console.log("MIRA ESTO:");
+        console.log(subProductosObjetos);
+        const selectedPintura = subProductosObjetos.find(item => item.SubProducto === subProducto);   
         setSelectedSubProducto(selectedPintura);
+        setColoranteResultados([]);
+        //console.log(selectedPintura)
     };
+
+
+    useEffect(() => {
+        console.log("CAMBIO")
+        console.log(selectedSubProducto);
+    }, [selectedSubProducto])
+
 
     const handleLitrosSelect = (event) => {
-        setSelectedLitros(event.target.value); // Establecer los litros seleccionados
+        const litros = event.target.value;
+        setSelectedLitros(litros);
+        obtenerColorantes(litros);
     };
+
+    const obtenerColorantes = (litros) => {
+        console.log("ENTRO AMIGO");
+        console.log(selectedSubProducto);
+        if (!selectedSubProducto) return;
+
+
+        const colorantes = [];
+
+        console.log("Datos del subproducto seleccionado:", selectedSubProducto); // Ver los datos del subproducto
+
+        // Verificamos cada CodigoColorante y agregamos su correspondiente cantidad
+        if (selectedSubProducto.CodigoColorante1 && selectedSubProducto.CodigoColorante1 !== '0') {
+            colorantes.push({
+                colorante: selectedSubProducto.CodigoColorante1,
+                cantidad: selectedSubProducto[`Cantidad1_${litros}`],
+            });
+        }
+        if (selectedSubProducto.CodigoColorante2 && selectedSubProducto.CodigoColorante2 !== '0') {
+            colorantes.push({
+                colorante: selectedSubProducto.CodigoColorante2,
+                cantidad: selectedSubProducto[`Cantidad2_${litros}`],
+            });
+        }
+        if (selectedSubProducto.CodigoColorante3 && selectedSubProducto.CodigoColorante3 !== '0') {
+            colorantes.push({
+                colorante: selectedSubProducto.CodigoColorante3,
+                cantidad: selectedSubProducto[`Cantidad3_${litros}`],
+            });
+        }
+        if (selectedSubProducto.CodigoColorante4 && selectedSubProducto.CodigoColorante4 !== '0') {
+            colorantes.push({
+                colorante: selectedSubProducto.CodigoColorante4,
+                cantidad: selectedSubProducto[`Cantidad4_${litros}`],
+            });
+        }
+        if (selectedSubProducto.CodigoColorante5 && selectedSubProducto.CodigoColorante5 !== '0') {
+            colorantes.push({
+                colorante: selectedSubProducto.CodigoColorante5,
+                cantidad: selectedSubProducto[`Cantidad5_${litros}`],
+            });
+        }
+        if (selectedSubProducto.CodigoColorante6 && selectedSubProducto.CodigoColorante6 !== '0') {
+            colorantes.push({
+                colorante: selectedSubProducto.CodigoColorante6,
+                cantidad: selectedSubProducto[`Cantidad6_${litros}`],
+            });
+        }
+        console.log("Colorantes y cantidades obtenidos:", colorantes); // Mostrar colorantes obtenidos
+
+        setColoranteResultados(colorantes);
+    };
+
+
 
     useEffect(() => {
         getData();
     }, []);
 
     useEffect(() => {
-        footerActive(pinturas.length === 0);
-    }, [pinturas]);
+        footerActive(tablaPinturas.length === 0);
+    }, [tablaPinturas]);
 
-    // Generar filas vacías para la tabla
     const generarFilasVacias = (num) => {
         return Array.from({ length: num }, (_, index) => (
             <div key={index} className="grid grid-cols-4 gap-4 p-2 items-center zebra-row">
@@ -101,13 +167,16 @@ export default function InputContainer() {
             <div className="flex flex-row m-2 items-center justify-center">
                 {hasSearched && subProductos.length > 0 && (
                     <>
-                        <select onChange={(e) => handleSubProductoSelect(e.target.value)} className="rounded input-design my-2 bg-[#efecec] mx-2 h-[40px]">
-                            <option value="">Seleccione un Producto</option>
+                        <select
+                            onChange={(e) => handleSubProductoSelect(e.target.value)} // Mover onChange al select
+                            className="rounded input-design my-2 bg-[#efecec] mx-2 h-[40px]">
+                            <option value="">Seleccione un Producto</option> {/* Asegúrate de que el valor sea una cadena vacía */}
                             {subProductos.map((subProducto, index) => (
                                 <option key={index} value={subProducto}>{subProducto}</option>
                             ))}
                         </select>
-                        <select onChange={handleLitrosSelect} className="rounded input-design my-2 bg-[#efecec] mx-2 mx-2 h-[40px]">
+
+                        <select onChange={handleLitrosSelect} className="rounded input-design my-2 bg-[#efecec] mx-2 h-[40px]">
                             <option value="">Seleccione Litros de Base</option>
                             <option value="3">1 LITRO</option>
                             <option value="4">4 LITROS</option>
@@ -119,7 +188,6 @@ export default function InputContainer() {
             </div>
             <hr />
             <Card className="w-full">
-                {/* Encabezado fijo siempre visible */}
                 <div className="grid grid-cols-4 gap-4 text-left p-2 min-w-full font-bold text-[#0154b8]">
                     <div>Colorante</div>
                     <div>Cantidad</div>
@@ -128,39 +196,37 @@ export default function InputContainer() {
                 </div>
                 <hr />
                 <div>
-                    {selectedSubProducto ? (
-                        <div className={`grid grid-cols-4 gap-4 p-2 items-center zebra-row`}>
-                            <div style={{ minWidth: "120px" }}>
-                                <Input
-                                    type="text"
-                                    value={selectedSubProducto.Col || ""}
-                                    readOnly
-                                    className="text-[#0154b8] border rounded p-1"
-                                />
-                            </div>
-                            <div style={{ minWidth: "100px" }}>
-                                {selectedSubProducto.Cant ? (
+                    {coloranteResultados.length > 0 ? (
+                        coloranteResultados.map((resultado, index) => (
+                            <div key={index} className={`grid grid-cols-4 gap-4 p-2 items-center zebra-row`}>
+                                <div style={{ minWidth: "120px" }}>
                                     <Input
                                         type="text"
-                                        value={selectedSubProducto.Cant}
+                                        value={resultado.colorante || ""}
                                         readOnly
                                         className="text-[#0154b8] border rounded p-1"
                                     />
-                                ) : (
-                                    <div className="desactivado" />  // Div vacío para la cantidad
-                                )}
+                                </div>
+                                <div style={{ minWidth: "100px" }}>
+                                    <Input
+                                        type="text"
+                                        value={resultado.cantidad || ""}
+                                        readOnly
+                                        className="text-[#0154b8] border rounded p-1"
+                                    />
+                                </div>
+                                <div style={{ minWidth: "100px" }}>
+                                    <Typography variant="small" className="font-bold text-[#0154b8]">
+                                        {resultado.cantidad > 0 ? `$0` : ""}
+                                    </Typography>
+                                </div>
+                                <div style={{ minWidth: "100px" }}>
+                                    <Typography variant="small" className="font-bold text-[#0154b8]">
+                                        {resultado.cantidad > 0 ? `$0` : ""}
+                                    </Typography>
+                                </div>
                             </div>
-                            <div style={{ minWidth: "100px" }}>
-                                <Typography variant="small" className="font-bold text-[#0154b8]">
-                                    {selectedSubProducto.CodigoBase3 ? `$${selectedSubProducto.CodigoBase3}` : ""}
-                                </Typography>
-                            </div>
-                            <div style={{ minWidth: "100px" }}>
-                                <Typography variant="small" className="font-bold text-[#0154b8]">
-                                    {selectedSubProducto.CodigoBase3 ? `$${selectedSubProducto.CodigoBase3}` : ""}
-                                </Typography>
-                            </div>
-                        </div>
+                        ))
                     ) : (
                         generarFilasVacias(8) // Generar 8 filas vacías
                     )}
