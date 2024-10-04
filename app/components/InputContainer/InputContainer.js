@@ -232,7 +232,7 @@ export default function InputContainer() {
 
     return (
         <div className="mb-10 ancho-minimo">
-            <h2 className="my-2 mt-10 text-3xl text-center text-[#fc5273] font-bold">OBRA</h2>
+            <h2 className="my-2 mt-10 text-3xl text-center text-[#fc5273] font-bold">Tintometria para HOGAR/OBRA</h2>
             <div className="flex flex-col m-2 items-center justify-center">
                 <label>
                     <Input
@@ -269,13 +269,12 @@ export default function InputContainer() {
             </div>
             <hr />
             <Card className="w-full">
-                <div className="grid grid-cols-4 gap-4 text-left p-2 min-w-full font-bold text-[#0154b8]">
+                <div className="grid grid-cols-4 gap-4 text-left p-2 min-w-full font-bold bg-[#0154b8] text-white">
                     <div>Colorante</div>
                     <div>Cantidad</div>
                     <div>Precio</div>
                     <div>Importe</div>
                 </div>
-                <hr />
                 <div>
                     {coloranteResultados.length > 0 ? (
                         coloranteResultados.map((resultado, index) => {
@@ -326,7 +325,7 @@ export default function InputContainer() {
                 </div>
                 <div className="flex flex-col">
                     <p>$0.00</p>
-                    <p>$0.00 Imprimir precio final aqui</p>
+                    <p>$0.00</p>
                     <p>$0.00</p>
                 </div>
             </div>
