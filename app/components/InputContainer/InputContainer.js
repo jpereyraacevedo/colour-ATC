@@ -210,6 +210,7 @@ export default function InputContainer() {
 
 
 
+
     const generarFilasVacias = (num) => {
         return Array.from({ length: num }, (_, index) => (
             <div key={index} className="grid grid-cols-4 gap-4 p-2 items-center zebra-row">
@@ -231,7 +232,7 @@ export default function InputContainer() {
 
     return (
         <div className="mb-10 ancho-minimo">
-            <h2 className="my-2 mt-10 text-3xl text-center text-[#0154b8] font-bold">OBRA</h2>
+            <h2 className="my-2 mt-10 text-3xl text-center text-[#fc5273] font-bold">OBRA</h2>
             <div className="flex flex-col m-2 items-center justify-center">
                 <label>
                     <Input
@@ -277,46 +278,45 @@ export default function InputContainer() {
                 <hr />
                 <div>
                     {coloranteResultados.length > 0 ? (
-                        coloranteResultados.map((resultado, index) => (
-                            <div key={index} className={`grid grid-cols-4 gap-4 p-2 items-center zebra-row`}>
-                                <div style={{ minWidth: "120px" }}>
-                                    <Input
-                                        type="text"
-                                        value={resultado.colorante || ""}
-                                        readOnly
-                                        className="text-[#0154b8] border rounded p-2 font-bold"
-                                    />
-                                </div>
-                                <div style={{ minWidth: "100px" }}>
-                                    <Input
-                                        type="text"
-                                        value={resultado.cantidad || ""}
-                                        readOnly
-                                        className="text-[#0154b8] border rounded p-2 font-bold"
-                                    />
-                                </div>
-                                {/* <div style={{ minWidth: "100px" }}>
-                                    <Typography variant="small" className="font-bold text-[#0154b8] font-bold">
-                                        {resultado.cantidad > 0 ? `$0` : ""}
-                                    </Typography>
-                                </div> */}
-                                <div style={{ minWidth: "100px" }}>
-                                    <Typography variant="small" className="font-bold text-[#0154b8] font-bold">
-                                        {resultado.precio ? `$${resultado.precio}` : ""}
-                                    </Typography>
-                                </div>
+                        coloranteResultados.map((resultado, index) => {
+                            const importe = resultado.cantidad && resultado.precio ? resultado.cantidad * resultado.precio : 0; // Calcular importe
 
-                                <div style={{ minWidth: "100px" }}>
-                                    <Typography variant="small" className="font-bold text-[#0154b8] font-bold">
-                                        {resultado.cantidad > 0 ? `$0` : ""}
-                                    </Typography>
+                            return (
+                                <div key={index} className="grid grid-cols-4 gap-4 p-2 items-center zebra-row">
+                                    <div style={{ minWidth: "120px" }}>
+                                        <Input
+                                            type="text"
+                                            value={resultado.colorante || ""}
+                                            readOnly
+                                            className="text-[#0154b8] border rounded p-2 font-bold"
+                                        />
+                                    </div>
+                                    <div style={{ minWidth: "100px" }}>
+                                        <Input
+                                            type="text"
+                                            value={resultado.cantidad || ""}
+                                            readOnly
+                                            className="text-[#0154b8] border rounded p-2 font-bold"
+                                        />
+                                    </div>
+                                    <div style={{ minWidth: "100px" }}>
+                                        <Typography variant="small" className="font-bold text-[#0154b8]">
+                                            {resultado.precio ? `$${resultado.precio}` : ""}
+                                        </Typography>
+                                    </div>
+                                    <div style={{ minWidth: "100px" }}>
+                                        <Typography variant="small" className="font-bold text-[#0154b8]">
+                                            {importe > 0 ? `$${importe.toFixed(2)}` : ""}
+                                        </Typography>
+                                    </div>
                                 </div>
-                            </div>
-                        ))
+                            );
+                        })
                     ) : (
                         generarFilasVacias(8) // Generar 8 filas vacías
                     )}
                 </div>
+
             </Card>
             <div className="flex justify-between p-5 border-t border-blue-gray-100 text-[#0154b8] font-bold">
                 <div className="flex flex-col">
@@ -326,7 +326,7 @@ export default function InputContainer() {
                 </div>
                 <div className="flex flex-col">
                     <p>$0.00</p>
-                    <p>$0.00</p>
+                    <p>$0.00 Imprimir precio final aqui</p>
                     <p>$0.00</p>
                 </div>
             </div>
