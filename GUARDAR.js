@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useContext } from "react";
 import { Card, Typography, Input, Button } from "@material-tailwind/react";
 import { ClassContext } from "../../Context";
@@ -132,13 +133,15 @@ export default function InputContainer() {
 
         const colorantes = [];
 
-        const agregarColorante = (codigoColorante, cantidadLitros) => {
+        const agregarColorante = (codigoColorante) => {
             const resultadoColorante = buscarLetraPorCodigo(codigoColorante);
             if (resultadoColorante) {
+                const cantidad = selectedSubProducto[`Cantidad${coloranteResultados.length + 1}_${litros}`];
                 colorantes.push({
                     colorante: resultadoColorante.letra,
-                    cantidad: cantidadLitros,
-                    precio: resultadoColorante.precioPulzo
+                    cantidad: cantidad,
+                    precio: resultadoColorante.precioPulzo,
+                    importe: cantidad ? resultadoColorante.precioPulzo * cantidad : 0, // Calculamos el importe aquí
                 });
             }
         };
@@ -207,6 +210,12 @@ export default function InputContainer() {
             precioPulzo: pigmentoEncontrado.PrecioPulzo
         };
     };
+
+    // Nueva función para calcular el importe total
+    const calcularTotalImporte = () => {
+        return coloranteResultados.reduce((total, colorante) => total + colorante.importe, 0).toFixed(2);
+    };
+
 
 
 
@@ -308,7 +317,7 @@ export default function InputContainer() {
 
                                 <div style={{ minWidth: "100px" }}>
                                     <Typography variant="small" className="font-bold text-[#0154b8] font-bold">
-                                        {resultado.cantidad > 0 ? `$0` : ""}
+                                        {resultado.importe > 0 ? `$${resultado.importe.toFixed(2)}` : ""}
                                     </Typography>
                                 </div>
                             </div>
@@ -326,8 +335,8 @@ export default function InputContainer() {
                 </div>
                 <div className="flex flex-col">
                     <p>$0.00</p>
-                    <p>$0.00</p>
-                    <p>$0.00</p>
+                    <p>${calcularTotalImporte()}</p>
+                    <p>${calcularTotalImporte()}</p>
                 </div>
             </div>
         </div>
