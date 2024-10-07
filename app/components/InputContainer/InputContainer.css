@@ -74,5 +74,44 @@
     transform: skewX(-45deg) scale(1, 1);
 }
 
+.ov-btn-grow-skew-borrar {
+    background: #fff;
+    /* color de fondo */
+    color: red;
+    /* color de fuente */
+    border: 2px solid red;
+    /* tamaño y color de borde */
+    padding: 0px 20px;
+    border-radius: 3px;
+    /* redondear bordes */
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    display: inline-block;
+}
 
+.ov-btn-grow-skew-borrar:hover {
+    color: #fff;
+    /* color de fuente hover */
+}
 
+.ov-btn-grow-skew-borrar::after {
+    content: "";
+    background: red;
+    /* color de fondo hover */
+    position: absolute;
+    z-index: -1;
+    padding: 16px 20px;
+    display: block;
+    left: -20%;
+    right: -20%;
+    top: 0;
+    bottom: 0;
+    transform: skewX(-45deg) scale(0, 1);
+    transition: all 0.3s ease;
+}
+
+.ov-btn-grow-skew-borrar:hover::after {
+    transition: all 0.3s ease-out;
+    transform: skewX(-45deg) scale(1, 1);
+}

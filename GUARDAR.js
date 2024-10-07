@@ -81,3 +81,6 @@ useEffect(() => {
     //         buscarLetraPorCodigo(resultado.colorante);
     //     });
     // };
+
+
+    onClick={borrarBusqueda}

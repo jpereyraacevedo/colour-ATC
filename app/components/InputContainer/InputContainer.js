@@ -15,9 +15,9 @@ export default function InputContainer() {
     const [coloranteResultados, setColoranteResultados] = useState([]);
     const [subProductosObjetos, setSubProductosObjetos] = useState([]);
     const [tablaPigmentos, setTablaPigmentos] = useState([])
-    const [letraColorante, setLetraColorante] = useState()
-    const [tablaBases, setTablaBases] = useState ([])
+    const [tablaBases, setTablaBases] = useState([])
     const [totalImporte, setTotalImporte] = useState(0)
+    const [precioBases, setPrecioBases] = useState(0)
 
     const handleInputChange = (event) => {
         const value = event.target.value;
@@ -45,7 +45,6 @@ export default function InputContainer() {
     const getDataPigmen = async () => {
         try {
             const response = await axios.get("http://localhost:5000/api/data/pigmentos");
-            // console.log(response.data)
             setTablaPigmentos(response.data);
         } catch (err) {
             console.error('Error al obtener los datos:', err);
@@ -56,9 +55,7 @@ export default function InputContainer() {
     const getDataBases = async () => {
         try {
             const response = await axios.get("http://localhost:5000/api/data/bases");
-            console.log(response.data)
             setTablaBases(response.data);
-            console.log(tablaBases)
         } catch (err) {
             console.error('Error al obtener los datos:', err);
         }
@@ -75,6 +72,16 @@ export default function InputContainer() {
         setHasSearched(true);
     };
 
+    // Funcion para borrar la barra de busqueda
+    const borrarBusqueda = () => {
+        setBusqueda("");
+        setHasSearched(false);
+        coloranteResultados.length = 0;
+        setTotalImporte(0);
+        setPrecioBases(0);
+    }
+
+
     // Pa tomar el subproducto y completar los datos de la pintura ingresada
     const handleSubProductoSelect = (subProducto) => {
         const selectedPintura = subProductosObjetos.find(item => item.SubProducto === subProducto);
@@ -87,10 +94,11 @@ export default function InputContainer() {
         const litros = event.target.value;
         setSelectedLitros(litros);
         obtenerColorantes(litros);
+        obtenerCodigoBase(litros);
     };
 
 
-   
+
     const obtenerColorantes = (litros) => {
         if (!selectedSubProducto) return;
 
@@ -137,7 +145,7 @@ export default function InputContainer() {
             return total + importe;
         }, 0);
         setTotalImporte(importeTotal);
-      }, [coloranteResultados]);
+    }, [coloranteResultados]);
 
     useEffect(() => {
         getData();
@@ -162,6 +170,40 @@ export default function InputContainer() {
         };
     };
 
+    // Nueva función para obtener el CodigoBase según el litro seleccionado
+    const obtenerCodigoBase = (litros) => {
+        if (!selectedSubProducto) return;
+
+        let codigoBase = null;
+        switch (litros) {
+            case "3":
+                codigoBase = selectedSubProducto.CodigoBase3;
+                break;
+            case "4":
+                codigoBase = selectedSubProducto.CodigoBase4;
+                break;
+            case "5":
+                codigoBase = selectedSubProducto.CodigoBase5;
+                break;
+            case "6":
+                codigoBase = selectedSubProducto.CodigoBase6;
+                break;
+            default:
+                console.log("Valor no válido");
+        }
+
+        if (codigoBase) {
+            // Buscar el valor del precio en la tabla de bases
+            const baseEncontrada = tablaBases.find(base => base.Codigo === codigoBase);
+            if (baseEncontrada) {
+                console.log(`CodigoBase${litros}:`, codigoBase);
+                console.log(`Precio de la base ${codigoBase}: $${baseEncontrada.Precio}`);
+                setPrecioBases(baseEncontrada.Precio)
+            } else {
+                console.log(`No se encontró la base con el código: ${codigoBase}`);
+            }
+        }
+    };
 
 
 
@@ -187,19 +229,21 @@ export default function InputContainer() {
     return (
         <div className="mb-10 ancho-minimo">
             <h2 className="my-2 mt-10 text-3xl text-center text-[#fc5273] font-bold">Tintometria para HOGAR/OBRA</h2>
-            <div className="flex flex-col m-2 items-center justify-center">
+            <hr />
+            <div className="flex flex-col m-2 items-center justify-center md:flex-row">
                 <label>
                     <Input
-                        className="bg-[#fff] px-4 py-3 outline-none w-[220px] text-[#0154b8] font-bold rounded-lg border-2 transition-colors duration-100 border-solid focus:border-[#0154b8] border-[#0154b8]"
+                        className="bg-[#fff] px-4 py-3 outline-none w-[220px] text-[#0154b8] font-bold rounded border-2 transition-colors duration-100 border-solid focus:border-[#0154b8] border-[#0154b8]"
                         type="text"
                         value={busqueda}
                         placeholder="Ingrese el código color"
                         onChange={handleInputChange}
                     />
                 </label>
-                <Button onClick={buscarSubProductos} className="my-2 bg-[#0154b8] mx-2 h-[40px] prueba ov-btn-grow-skew">Buscar</Button>
+                    <Button onClick={buscarSubProductos} className="m-2 px-auto h-[44px] ov-btn-grow-skew">Buscar</Button>
+                    <Button onClick={borrarBusqueda} className="m-2 px-auto h-[44px] ov-btn-grow-skew-borrar">Borrar</Button>
             </div>
-            <div className="flex flex-col m-2 items-center justify-center">
+            <div className="flex flex-col md:flex-row m-2 items-center justify-center">
                 {hasSearched && subProductos.length > 0 && (
                     <>
                         <select
@@ -212,7 +256,7 @@ export default function InputContainer() {
                         </select>
 
                         <select onChange={handleLitrosSelect} className="border-b border-[#0154b8] rounded input-design my-2 mx-2 h-[40px]">
-                            <option value="">Seleccione Litros de Base</option>
+                            <option value="">Seleccione Cant. de Base</option>
                             <option value="3">1 LITRO</option>
                             <option value="4">4 LITROS</option>
                             <option value="5">10 LITROS</option>
@@ -254,12 +298,12 @@ export default function InputContainer() {
                                     </div>
                                     <div style={{ minWidth: "100px" }}>
                                         <Typography variant="small" className="font-bold text-[#0154b8]">
-                                            {resultado.precio ? `$${resultado.precio}` : ""}
+                                            {resultado.precio ? `$${resultado.precio.toFixed(4)}` : ""}
                                         </Typography>
                                     </div>
                                     <div style={{ minWidth: "100px" }}>
                                         <Typography variant="small" className="font-bold text-[#0154b8]">
-                                            {importe > 0 ? `$${importe.toFixed(2)}` : ""}
+                                            {importe > 0 ? `$${importe.toFixed(4)}` : ""}
                                         </Typography>
                                     </div>
                                 </div>
@@ -278,9 +322,9 @@ export default function InputContainer() {
                     <p>Importe TOTAL</p>
                 </div>
                 <div className="flex flex-col">
-                    <p>$0.00</p>
+                    <p>{`$${precioBases}`}</p>
                     <p>{`$${totalImporte.toFixed(2)}`}</p>
-                    <p>{`$${totalImporte.toFixed(2)}`}</p>
+                    <p>{`$${(totalImporte + precioBases).toFixed(2)}`}</p>
                 </div>
             </div>
         </div>
