@@ -18,11 +18,11 @@
 
 /* Zebra stripes para filas alternadas */
 .zebra-row:nth-child(odd) {
-    background-color: #a7bcf0;
+    background-color: #fff;
 }
 
 .zebra-row:nth-child(even) {
-    background-color: #ffffff;
+    background-color: #a7bcf0;
 }
 
 .desactivado {

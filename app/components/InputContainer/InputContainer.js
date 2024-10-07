@@ -16,6 +16,8 @@ export default function InputContainer() {
     const [subProductosObjetos, setSubProductosObjetos] = useState([]);
     const [tablaPigmentos, setTablaPigmentos] = useState([])
     const [letraColorante, setLetraColorante] = useState()
+    const [tablaBases, setTablaBases] = useState ([])
+    const [totalImporte, setTotalImporte] = useState(0)
 
     const handleInputChange = (event) => {
         const value = event.target.value;
@@ -43,8 +45,20 @@ export default function InputContainer() {
     const getDataPigmen = async () => {
         try {
             const response = await axios.get("http://localhost:5000/api/data/pigmentos");
-            console.log(response.data)
+            // console.log(response.data)
             setTablaPigmentos(response.data);
+        } catch (err) {
+            console.error('Error al obtener los datos:', err);
+        }
+    };
+
+    // Llamada a la tabla de bases 
+    const getDataBases = async () => {
+        try {
+            const response = await axios.get("http://localhost:5000/api/data/bases");
+            console.log(response.data)
+            setTablaBases(response.data);
+            console.log(tablaBases)
         } catch (err) {
             console.error('Error al obtener los datos:', err);
         }
@@ -76,57 +90,7 @@ export default function InputContainer() {
     };
 
 
-    // MEJORAR ESTO ---> Por ahora es para matchear los colorantes con los litros y sus cantidades
-    // const obtenerColorantes = (litros) => {
-    //     if (!selectedSubProducto) return;
-
-    //     const colorantes = [];
-
-    //     // Verificamos cada CodigoColorante y agregamos su correspondiente cantidad
-    //     if (selectedSubProducto.CodigoColorante1 && selectedSubProducto.CodigoColorante1 !== '0') {
-    //         colorantes.push({
-    //             colorante: buscarLetraPorCodigo(selectedSubProducto.CodigoColorante1),
-    //             cantidad: selectedSubProducto[`Cantidad1_${litros}`],
-    //         });
-    //     }
-    //     if (selectedSubProducto.CodigoColorante2 && selectedSubProducto.CodigoColorante2 !== '0') {
-    //         colorantes.push({
-    //             colorante: buscarLetraPorCodigo(selectedSubProducto.CodigoColorante2),
-    //             cantidad: selectedSubProducto[`Cantidad2_${litros}`],
-    //         });
-    //     }
-    //     if (selectedSubProducto.CodigoColorante3 && selectedSubProducto.CodigoColorante3 !== '0') {
-    //         colorantes.push({
-    //             colorante: buscarLetraPorCodigo(selectedSubProducto.CodigoColorante3),
-    //             cantidad: selectedSubProducto[`Cantidad3_${litros}`],
-    //         });
-    //     }
-    //     if (selectedSubProducto.CodigoColorante4 && selectedSubProducto.CodigoColorante4 !== '0') {
-    //         colorantes.push({
-    //             colorante: buscarLetraPorCodigo(selectedSubProducto.CodigoColorante4),
-    //             cantidad: selectedSubProducto[`Cantidad4_${litros}`],
-    //         });
-    //     }
-    //     if (selectedSubProducto.CodigoColorante5 && selectedSubProducto.CodigoColorante5 !== '0') {
-    //         colorantes.push({
-    //             colorante: buscarLetraPorCodigo(selectedSubProducto.CodigoColorante5),
-    //             cantidad: selectedSubProducto[`Cantidad5_${litros}`],
-    //         });
-    //     }
-    //     if (selectedSubProducto.CodigoColorante6 && selectedSubProducto.CodigoColorante6 !== '0') {
-    //         colorantes.push({
-    //             colorante: buscarLetraPorCodigo(selectedSubProducto.CodigoColorante6),
-    //             cantidad: selectedSubProducto[`Cantidad6_${litros}`],
-    //         });
-    //     }
-
-    //     setColoranteResultados(colorantes);
-
-    //     // Busca los resultados y los compara con la columna de letra 
-    //     colorantes.forEach(resultado => {
-    //         buscarLetraPorCodigo(resultado.colorante);
-    //     });
-    // };
+   
     const obtenerColorantes = (litros) => {
         if (!selectedSubProducto) return;
 
@@ -166,11 +130,19 @@ export default function InputContainer() {
         setColoranteResultados(colorantes);
     };
 
-
+    // Sumatoria final
+    useEffect(() => {
+        const importeTotal = coloranteResultados.reduce((total, resultado) => {
+            const importe = resultado.cantidad && resultado.precio ? resultado.cantidad * resultado.precio : 0;
+            return total + importe;
+        }, 0);
+        setTotalImporte(importeTotal);
+      }, [coloranteResultados]);
 
     useEffect(() => {
         getData();
         getDataPigmen();
+        getDataBases();
     }, []);
 
     useEffect(() => {
@@ -178,24 +150,6 @@ export default function InputContainer() {
     }, [tablaPinturas]);
 
 
-    // Funcion de prueba para el match de codigo con letra
-    // const buscarLetraPorCodigo = (codigoColorante) => {
-    //     let pigmentosDos; 
-    //     const pigmentoEncontrado = tablaPigmentos.find((pigmento) => {
-    //        if (pigmento.Codigo === codigoColorante)
-    //         {
-    //             pigmentosDos=pigmento.Letra;
-    //             return true;
-    //         } else {
-    //             return false
-    //         }
-    //     });
-
-    //      if (!pigmentoEncontrado) return;
-
-    //      console.log("ES POR ACA " + pigmentosDos)
-    //      return pigmentosDos
-    // };
 
     const buscarLetraPorCodigo = (codigoColorante) => {
         const pigmentoEncontrado = tablaPigmentos.find((pigmento) => pigmento.Codigo === codigoColorante);
@@ -325,8 +279,8 @@ export default function InputContainer() {
                 </div>
                 <div className="flex flex-col">
                     <p>$0.00</p>
-                    <p>$0.00</p>
-                    <p>$0.00</p>
+                    <p>{`$${totalImporte.toFixed(2)}`}</p>
+                    <p>{`$${totalImporte.toFixed(2)}`}</p>
                 </div>
             </div>
         </div>
