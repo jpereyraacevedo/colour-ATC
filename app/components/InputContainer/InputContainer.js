@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Card, Typography, Input} from "@material-tailwind/react";
 import SearchBar from "../SearchBar/SearchBar";
-import SelectProductos from "../SelectProductos/SelectProductos"
-import TablaColorantes from "../TablaColorantes/TablaColorantes"
+import SelectProductos from "../SelectProductos/SelectProductos";
+import TablaColorantes from "../TablaColorantes/TablaColorantes";
+import ImporteTotal from "../ImporteTotal/ImporteTotal";
 import "./InputContainer.css";
 
 export default function InputContainer() {
@@ -320,7 +321,10 @@ export default function InputContainer() {
                 </div>
             </Card> */}
 
-            <div className="flex justify-between p-5 border-t border-blue-gray-100 text-[#0154b8] font-bold">
+
+            {/* Componente de ImporteTotal */}
+            <ImporteTotal precioBases={precioBases} totalImporte={totalImporte} />
+            {/* <div className="flex justify-between p-5 border-t border-blue-gray-100 text-[#0154b8] font-bold">
                 <div className="flex flex-col">
                     <p>Importe base</p>
                     <p>Importe colorante</p>
@@ -331,7 +335,7 @@ export default function InputContainer() {
                     <p>{`$ ${totalImporte.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}</p>
                     <p>{`$ ${(totalImporte + precioBases).toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}</p>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 }

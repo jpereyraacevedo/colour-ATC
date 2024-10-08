@@ -12,3 +12,6 @@ const ImporteTotal = ({ precioBases, totalImporte }) => (
       </div>
   </div>
 );
+
+
+export default ImporteTotal
