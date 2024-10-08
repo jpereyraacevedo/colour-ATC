@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Card, Typography, Input, Button } from "@material-tailwind/react";
-import { ClassContext } from "../../Context";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Card, Typography, Input} from "@material-tailwind/react";
+import SearchBar from "../SearchBar/SearchBar";
 import "./InputContainer.css";
 
 export default function InputContainer() {
-    const { footerActive } = useContext(ClassContext);
     const [tablaPinturas, setTablaPinturas] = useState([]);
     const [busqueda, setBusqueda] = useState("");
     const [subProductos, setSubProductos] = useState([]);
@@ -34,7 +33,7 @@ export default function InputContainer() {
     // Llamada a la tabla de formulas
     const getData = async () => {
         try {
-            const response = await axios.get("http://localhost:5000/api/data/formulas");
+            const response = await axios.get("http://192.168.0.240:5000/api/data/formulas");
             setTablaPinturas(response.data);
         } catch (err) {
             console.error('Error al obtener los datos:', err);
@@ -44,7 +43,7 @@ export default function InputContainer() {
     // Llamada a la tabla de pigmentos 
     const getDataPigmen = async () => {
         try {
-            const response = await axios.get("http://localhost:5000/api/data/pigmentos");
+            const response = await axios.get("http://192.168.0.240:5000/api/data/pigmentos");
             setTablaPigmentos(response.data);
         } catch (err) {
             console.error('Error al obtener los datos:', err);
@@ -54,7 +53,7 @@ export default function InputContainer() {
     // Llamada a la tabla de bases 
     const getDataBases = async () => {
         try {
-            const response = await axios.get("http://localhost:5000/api/data/bases");
+            const response = await axios.get("http://192.168.0.240:5000/api/data/bases");
             setTablaBases(response.data);
         } catch (err) {
             console.error('Error al obtener los datos:', err);
@@ -62,15 +61,17 @@ export default function InputContainer() {
     };
 
 
-    // Con la barra de busqueda filtra ese valor para mapear el select con los subproductos de ese codigo
+    // Con la barra de búsqueda filtra ese valor para mapear el select con los subproductos de ese código o fórmula
     const buscarSubProductos = () => {
         const resultadosBusqueda = tablaPinturas.filter((elemento) =>
-            elemento.Codigo.toLowerCase() === busqueda.toLowerCase()
+            elemento.Codigo.toLowerCase() === busqueda.toLowerCase() ||      // Busqueda en la columna Codigo
+            elemento.Formula.toLowerCase().includes(busqueda.toLowerCase()) // Busqueda en formula
         );
         setSubProductos(resultadosBusqueda.map(item => item.SubProducto));
         setSubProductosObjetos(resultadosBusqueda);
         setHasSearched(true);
     };
+
 
     // Funcion para borrar la barra de busqueda
     const borrarBusqueda = () => {
@@ -97,8 +98,7 @@ export default function InputContainer() {
         obtenerCodigoBase(litros);
     };
 
-
-
+    // Data de colorantes
     const obtenerColorantes = (litros) => {
         if (!selectedSubProducto) return;
 
@@ -147,17 +147,12 @@ export default function InputContainer() {
         setTotalImporte(importeTotal);
     }, [coloranteResultados]);
 
+    // Llamada para obtener los datos de las tablas
     useEffect(() => {
         getData();
         getDataPigmen();
         getDataBases();
     }, []);
-
-    useEffect(() => {
-        footerActive(tablaPinturas.length === 0);
-    }, [tablaPinturas]);
-
-
 
     const buscarLetraPorCodigo = (codigoColorante) => {
         const pigmentoEncontrado = tablaPigmentos.find((pigmento) => pigmento.Codigo === codigoColorante);
@@ -196,8 +191,6 @@ export default function InputContainer() {
             // Buscar el valor del precio en la tabla de bases
             const baseEncontrada = tablaBases.find(base => base.Codigo === codigoBase);
             if (baseEncontrada) {
-                console.log(`CodigoBase${litros}:`, codigoBase);
-                console.log(`Precio de la base ${codigoBase}: $${baseEncontrada.Precio}`);
                 setPrecioBases(baseEncontrada.Precio)
             } else {
                 console.log(`No se encontró la base con el código: ${codigoBase}`);
@@ -205,12 +198,10 @@ export default function InputContainer() {
         }
     };
 
-
-
     const generarFilasVacias = (num) => {
         return Array.from({ length: num }, (_, index) => (
             <div key={index} className="grid grid-cols-4 gap-4 p-2 items-center zebra-row">
-                <div style={{ minWidth: "120px" }}>
+                <div style={{ minWidth: "100px" }}>
                     <div className="desactivado" />
                 </div>
                 <div style={{ minWidth: "100px" }}>
@@ -228,9 +219,11 @@ export default function InputContainer() {
 
     return (
         <div className="mb-10 ancho-minimo">
-            <h2 className="my-2 mt-10 text-3xl text-center text-[#fc5273] font-bold">Tintometria para HOGAR/OBRA</h2>
+            <h2 className="my-2 mt-10 text-3xl text-center text-[#fc5273] font-bold">Tintometría para HOGAR/OBRA</h2>
             <hr />
-            <div className="flex flex-col m-2 items-center justify-center md:flex-row">
+            {/* Importar la searchbar */}
+            <SearchBar busqueda={busqueda} handleInputChange={handleInputChange} buscarSubProductos={buscarSubProductos} borrarBusqueda={borrarBusqueda} />
+            {/* <div className="flex flex-col m-2 items-center justify-center md:flex-row">
                 <label>
                     <Input
                         className="bg-[#fff] px-4 py-3 outline-none w-[220px] text-[#0154b8] font-bold rounded border-2 transition-colors duration-100 border-solid focus:border-[#0154b8] border-[#0154b8]"
@@ -240,9 +233,11 @@ export default function InputContainer() {
                         onChange={handleInputChange}
                     />
                 </label>
-                    <Button onClick={buscarSubProductos} className="m-2 px-auto h-[44px] ov-btn-grow-skew">Buscar</Button>
-                    <Button onClick={borrarBusqueda} className="m-2 px-auto h-[44px] ov-btn-grow-skew-borrar">Borrar</Button>
-            </div>
+                <div>
+                    <Button onClick={buscarSubProductos} className="m-2 px-auto h-[44px] w-[98px] ov-btn-grow-skew">Buscar</Button>
+                    <Button onClick={borrarBusqueda} className="m-2 px-auto h-[44px] w-[98px] ov-btn-grow-skew-borrar">Borrar</Button>
+                </div>
+            </div> */}
             <div className="flex flex-col md:flex-row m-2 items-center justify-center">
                 {hasSearched && subProductos.length > 0 && (
                     <>
@@ -265,9 +260,9 @@ export default function InputContainer() {
                     </>
                 )}
             </div>
-            <hr />
             <Card className="w-full">
-                <div className="grid grid-cols-4 gap-4 text-left p-2 min-w-full font-bold bg-[#0154b8] text-white">
+                <h2 className="text-center my-2">{ }</h2>
+                <div className="grid grid-cols-4 gap-4 text-left p-2 min-w-full font-bold bg-[#0154b8] text-white text-center">
                     <div>Colorante</div>
                     <div>Cantidad</div>
                     <div>Precio</div>
@@ -275,56 +270,58 @@ export default function InputContainer() {
                 </div>
                 <div>
                     {coloranteResultados.length > 0 ? (
-                        coloranteResultados.map((resultado, index) => {
-                            const importe = resultado.cantidad && resultado.precio ? resultado.cantidad * resultado.precio : 0; // Calcular importe
-
-                            return (
-                                <div key={index} className="grid grid-cols-4 gap-4 p-2 items-center zebra-row">
-                                    <div style={{ minWidth: "120px" }}>
-                                        <Input
-                                            type="text"
-                                            value={resultado.colorante || ""}
-                                            readOnly
-                                            className="text-[#0154b8] border rounded p-2 font-bold"
-                                        />
+                        <>
+                            {coloranteResultados.map((resultado, index) => {
+                                const importe = resultado.cantidad && resultado.precio ? resultado.cantidad * resultado.precio : 0; // Calcular importe
+                                return (
+                                    <div key={index} className="grid grid-cols-4 gap-4 p-2 items-center zebra-row">
+                                        <div style={{ minWidth: "120px" }}>
+                                            <Input
+                                                type="text"
+                                                value={resultado.colorante || ""}
+                                                readOnly
+                                                className="text-[#0154b8] border rounded p-2 font-bold text-center"
+                                            />
+                                        </div>
+                                        <div style={{ minWidth: "100px" }}>
+                                            <Input
+                                                type="text"
+                                                value={resultado.cantidad ? resultado.cantidad.toFixed(2) : ""} // Formatear cantidad a 2 decimales
+                                                readOnly
+                                                className="text-[#0154b8] border rounded p-2 font-bold text-end"
+                                            />
+                                        </div>
+                                        <div style={{ minWidth: "100px" }}>
+                                            <Typography variant="small" className="font-bold text-[#0154b8] text-end">
+                                                {resultado.precio ? `${resultado.precio.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : ""}
+                                            </Typography>
+                                        </div>
+                                        <div style={{ minWidth: "100px" }}>
+                                            <Typography variant="small" className="font-bold text-[#0154b8] text-end mr-[20px]">
+                                                {importe > 0 ? `${importe.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : ""}
+                                            </Typography>
+                                        </div>
                                     </div>
-                                    <div style={{ minWidth: "100px" }}>
-                                        <Input
-                                            type="text"
-                                            value={resultado.cantidad || ""}
-                                            readOnly
-                                            className="text-[#0154b8] border rounded p-2 font-bold"
-                                        />
-                                    </div>
-                                    <div style={{ minWidth: "100px" }}>
-                                        <Typography variant="small" className="font-bold text-[#0154b8]">
-                                            {resultado.precio ? `$${resultado.precio.toFixed(4)}` : ""}
-                                        </Typography>
-                                    </div>
-                                    <div style={{ minWidth: "100px" }}>
-                                        <Typography variant="small" className="font-bold text-[#0154b8]">
-                                            {importe > 0 ? `$${importe.toFixed(4)}` : ""}
-                                        </Typography>
-                                    </div>
-                                </div>
-                            );
-                        })
+                                );
+                            })}
+                            {generarFilasVacias(8 - coloranteResultados.length)} {/* Generar las filas vacías necesarias */}
+                        </>
                     ) : (
-                        generarFilasVacias(8) // Generar 8 filas vacías
+                        generarFilasVacias(8) // Generar 8 filas vacías cuando no hay resultados
                     )}
                 </div>
-
             </Card>
+
             <div className="flex justify-between p-5 border-t border-blue-gray-100 text-[#0154b8] font-bold">
                 <div className="flex flex-col">
                     <p>Importe base</p>
                     <p>Importe colorante</p>
                     <p>Importe TOTAL</p>
                 </div>
-                <div className="flex flex-col">
-                    <p>{`$${precioBases}`}</p>
-                    <p>{`$${totalImporte.toFixed(2)}`}</p>
-                    <p>{`$${(totalImporte + precioBases).toFixed(2)}`}</p>
+                <div className="flex flex-col text-end">
+                    <p>{`$ ${precioBases.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}</p>
+                    <p>{`$ ${totalImporte.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}</p>
+                    <p>{`$ ${(totalImporte + precioBases).toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}</p>
                 </div>
             </div>
         </div>

@@ -1,21 +1,9 @@
-import localFont from "next/font/local";
 import "./globals.css";
-import { ClassProvider } from "./Context";  // Importa el proveedor de contexto
+import { ClassProvider } from "./Context";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
 
 export const metadata = {
-  title: "A Todo Color",
+  title: "A Todo Color | Tintometria",
   description: "A Todo Color pinturerias",
 };
 
@@ -23,12 +11,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="es">
       <head>
-        <link rel="icon" type="image/png" href="/images/logo-black.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/logo-black.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/logo-black.png" />
+        <link rel="shortcut icon" href="/images/logo-black.png" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-container min-h-screen`}
+        className={`antialiased bg-container min-h-screen`}
       >
-        <ClassProvider>  {/* Envolver el contenido dentro del proveedor de contexto */}
+        <ClassProvider>
           {children}
         </ClassProvider>
       </body>
