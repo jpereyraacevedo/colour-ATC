@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Card, Typography, Input} from "@material-tailwind/react";
 import SearchBar from "../SearchBar/SearchBar";
+import SelectProductos from "../SelectProductos/SelectProductos"
 import "./InputContainer.css";
 
 export default function InputContainer() {
@@ -238,7 +239,10 @@ export default function InputContainer() {
                     <Button onClick={borrarBusqueda} className="m-2 px-auto h-[44px] w-[98px] ov-btn-grow-skew-borrar">Borrar</Button>
                 </div>
             </div> */}
-            <div className="flex flex-col md:flex-row m-2 items-center justify-center">
+
+            {/* COMPONENTE DE SELECT PRODUCTOS */}
+            <SelectProductos subProductos={subProductos} handleSubProductoSelect={handleSubProductoSelect} handleLitrosSelect={handleLitrosSelect} hasSearched={hasSearched} />
+            {/* <div className="flex flex-col md:flex-row m-2 items-center justify-center">
                 {hasSearched && subProductos.length > 0 && (
                     <>
                         <select
@@ -259,7 +263,7 @@ export default function InputContainer() {
                         </select>
                     </>
                 )}
-            </div>
+            </div> */}
             <Card className="w-full">
                 <h2 className="text-center my-2">{ }</h2>
                 <div className="grid grid-cols-4 gap-4 text-left p-2 min-w-full font-bold bg-[#0154b8] text-white text-center">
