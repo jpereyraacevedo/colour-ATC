@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Card, Typography, Input} from "@material-tailwind/react";
 import SearchBar from "../SearchBar/SearchBar";
 import SelectProductos from "../SelectProductos/SelectProductos";
 import TablaColorantes from "../TablaColorantes/TablaColorantes";
@@ -33,35 +32,54 @@ export default function InputContainer() {
         }
     };
 
-    // Llamada a la tabla de formulas
-    const getData = async () => {
-        try {
-            const response = await axios.get("http://192.168.0.240:5000/api/data/formulas");
-            setTablaPinturas(response.data);
-        } catch (err) {
-            console.error('Error al obtener los datos:', err);
-        }
-    };
+    // // Llamada a la tabla de formulas
+    // const getData = async () => {
+    //     try {
+    //         const response = await axios.get("http://192.168.0.240:5000/api/data/formulas");
+    //         setTablaPinturas(response.data);
+    //     } catch (err) {
+    //         console.error('Error al obtener los datos:', err);
+    //     }
+    // };
 
-    // Llamada a la tabla de pigmentos 
-    const getDataPigmen = async () => {
-        try {
-            const response = await axios.get("http://192.168.0.240:5000/api/data/pigmentos");
-            setTablaPigmentos(response.data);
-        } catch (err) {
-            console.error('Error al obtener los datos:', err);
-        }
-    };
+    // // Llamada a la tabla de pigmentos 
+    // const getDataPigmen = async () => {
+    //     try {
+    //         const response = await axios.get("http://192.168.0.240:5000/api/data/pigmentos");
+    //         setTablaPigmentos(response.data);
+    //     } catch (err) {
+    //         console.error('Error al obtener los datos:', err);
+    //     }
+    // };
 
-    // Llamada a la tabla de bases 
-    const getDataBases = async () => {
-        try {
-            const response = await axios.get("http://192.168.0.240:5000/api/data/bases");
-            setTablaBases(response.data);
-        } catch (err) {
-            console.error('Error al obtener los datos:', err);
-        }
-    };
+    // // Llamada a la tabla de bases 
+    // const getDataBases = async () => {
+    //     try {
+    //         const response = await axios.get("http://192.168.0.240:5000/api/data/bases");
+    //         setTablaBases(response.data);
+    //     } catch (err) {
+    //         console.error('Error al obtener los datos:', err);
+    //     }
+    // };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [formulas, pigmentos, bases] = await Promise.all([
+                    axios.get("http://192.168.0.240:5000/api/data/formulas"),
+                    axios.get("http://192.168.0.240:5000/api/data/pigmentos"),
+                    axios.get("http://192.168.0.240:5000/api/data/bases"),
+                ]);
+                setTablaPinturas(formulas.data);
+                setTablaPigmentos(pigmentos.data);
+                setTablaBases(bases.data);
+            } catch (err) {
+                console.error('Error al obtener los datos:', err);
+            }
+        };
+        fetchData();
+    }, []);
+
 
 
     // Con la barra de búsqueda filtra ese valor para mapear el select con los subproductos de ese código o fórmula
@@ -151,11 +169,11 @@ export default function InputContainer() {
     }, [coloranteResultados]);
 
     // Llamada para obtener los datos de las tablas
-    useEffect(() => {
-        getData();
-        getDataPigmen();
-        getDataBases();
-    }, []);
+    // useEffect(() => {
+    //     getData();
+    //     getDataPigmen();
+    //     getDataBases();
+    // }, []);
 
     const buscarLetraPorCodigo = (codigoColorante) => {
         const pigmentoEncontrado = tablaPigmentos.find((pigmento) => pigmento.Codigo === codigoColorante);
@@ -226,116 +244,12 @@ export default function InputContainer() {
             <hr />
             {/* Importar la searchbar */}
             <SearchBar busqueda={busqueda} handleInputChange={handleInputChange} buscarSubProductos={buscarSubProductos} borrarBusqueda={borrarBusqueda} />
-            {/* <div className="flex flex-col m-2 items-center justify-center md:flex-row">
-                <label>
-                    <Input
-                        className="bg-[#fff] px-4 py-3 outline-none w-[220px] text-[#0154b8] font-bold rounded border-2 transition-colors duration-100 border-solid focus:border-[#0154b8] border-[#0154b8]"
-                        type="text"
-                        value={busqueda}
-                        placeholder="Ingrese el código color"
-                        onChange={handleInputChange}
-                    />
-                </label>
-                <div>
-                    <Button onClick={buscarSubProductos} className="m-2 px-auto h-[44px] w-[98px] ov-btn-grow-skew">Buscar</Button>
-                    <Button onClick={borrarBusqueda} className="m-2 px-auto h-[44px] w-[98px] ov-btn-grow-skew-borrar">Borrar</Button>
-                </div>
-            </div> */}
-
             {/* COMPONENTE DE SELECT PRODUCTOS */}
             <SelectProductos subProductos={subProductos} handleSubProductoSelect={handleSubProductoSelect} handleLitrosSelect={handleLitrosSelect} hasSearched={hasSearched} />
-            {/* <div className="flex flex-col md:flex-row m-2 items-center justify-center">
-                {hasSearched && subProductos.length > 0 && (
-                    <>
-                        <select
-                            onChange={(e) => handleSubProductoSelect(e.target.value)}
-                            className="border-b border-[#0154b8] rounded input-design my-2 mx-2 h-[40px]">
-                            <option value="">Seleccione un Producto</option>
-                            {subProductos.map((subProducto, index) => (
-                                <option key={index} value={subProducto}>{subProducto}</option>
-                            ))}
-                        </select>
-
-                        <select onChange={handleLitrosSelect} className="border-b border-[#0154b8] rounded input-design my-2 mx-2 h-[40px]">
-                            <option value="">Seleccione Cant. de Base</option>
-                            <option value="3">1 LITRO</option>
-                            <option value="4">4 LITROS</option>
-                            <option value="5">10 LITROS</option>
-                            <option value="6">20 LITROS</option>
-                        </select>
-                    </>
-                )}
-            </div> */}
-
             {/* COMPONENTE DE TABLA COLORANTES */}
             <TablaColorantes coloranteResultados={coloranteResultados} generarFilasVacias={generarFilasVacias} />
-            {/* <Card className="w-full">
-                <h2 className="text-center my-2">{ }</h2>
-                <div className="grid grid-cols-4 gap-4 text-left p-2 min-w-full font-bold bg-[#0154b8] text-white text-center">
-                    <div>Colorante</div>
-                    <div>Cantidad</div>
-                    <div>Precio</div>
-                    <div>Importe</div>
-                </div>
-                <div>
-                    {coloranteResultados.length > 0 ? (
-                        <>
-                            {coloranteResultados.map((resultado, index) => {
-                                const importe = resultado.cantidad && resultado.precio ? resultado.cantidad * resultado.precio : 0; // Calcular importe
-                                return (
-                                    <div key={index} className="grid grid-cols-4 gap-4 p-2 items-center zebra-row">
-                                        <div style={{ minWidth: "120px" }}>
-                                            <Input
-                                                type="text"
-                                                value={resultado.colorante || ""}
-                                                readOnly
-                                                className="text-[#0154b8] border rounded p-2 font-bold text-center"
-                                            />
-                                        </div>
-                                        <div style={{ minWidth: "100px" }}>
-                                            <Input
-                                                type="text"
-                                                value={resultado.cantidad ? resultado.cantidad.toFixed(2) : ""} // Formatear cantidad a 2 decimales
-                                                readOnly
-                                                className="text-[#0154b8] border rounded p-2 font-bold text-end"
-                                            />
-                                        </div>
-                                        <div style={{ minWidth: "100px" }}>
-                                            <Typography variant="small" className="font-bold text-[#0154b8] text-end">
-                                                {resultado.precio ? `${resultado.precio.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : ""}
-                                            </Typography>
-                                        </div>
-                                        <div style={{ minWidth: "100px" }}>
-                                            <Typography variant="small" className="font-bold text-[#0154b8] text-end mr-[20px]">
-                                                {importe > 0 ? `${importe.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : ""}
-                                            </Typography>
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                            {generarFilasVacias(8 - coloranteResultados.length)}
-                        </>
-                    ) : (
-                        generarFilasVacias(8) // Generar 8 filas vacías cuando no hay resultados
-                    )}
-                </div>
-            </Card> */}
-
-
             {/* Componente de ImporteTotal */}
             <ImporteTotal precioBases={precioBases} totalImporte={totalImporte} />
-            {/* <div className="flex justify-between p-5 border-t border-blue-gray-100 text-[#0154b8] font-bold">
-                <div className="flex flex-col">
-                    <p>Importe base</p>
-                    <p>Importe colorante</p>
-                    <p>Importe TOTAL</p>
-                </div>
-                <div className="flex flex-col text-end">
-                    <p>{`$ ${precioBases.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}</p>
-                    <p>{`$ ${totalImporte.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}</p>
-                    <p>{`$ ${(totalImporte + precioBases).toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}</p>
-                </div>
-            </div> */}
         </div>
     );
 }
