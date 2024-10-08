@@ -15,10 +15,11 @@ export default function InputContainer() {
     const [hasSearched, setHasSearched] = useState(false);
     const [coloranteResultados, setColoranteResultados] = useState([]);
     const [subProductosObjetos, setSubProductosObjetos] = useState([]);
-    const [tablaPigmentos, setTablaPigmentos] = useState([])
-    const [tablaBases, setTablaBases] = useState([])
-    const [totalImporte, setTotalImporte] = useState(0)
-    const [precioBases, setPrecioBases] = useState(0)
+    const [tablaPigmentos, setTablaPigmentos] = useState([]);
+    const [tablaBases, setTablaBases] = useState([]);
+    const [totalImporte, setTotalImporte] = useState(0);
+    const [precioBases, setPrecioBases] = useState(0);
+    
 
     const handleInputChange = (event) => {
         const value = event.target.value;
@@ -31,36 +32,6 @@ export default function InputContainer() {
             setHasSearched(false);
         }
     };
-
-    // // Llamada a la tabla de formulas
-    // const getData = async () => {
-    //     try {
-    //         const response = await axios.get("http://192.168.0.240:5000/api/data/formulas");
-    //         setTablaPinturas(response.data);
-    //     } catch (err) {
-    //         console.error('Error al obtener los datos:', err);
-    //     }
-    // };
-
-    // // Llamada a la tabla de pigmentos 
-    // const getDataPigmen = async () => {
-    //     try {
-    //         const response = await axios.get("http://192.168.0.240:5000/api/data/pigmentos");
-    //         setTablaPigmentos(response.data);
-    //     } catch (err) {
-    //         console.error('Error al obtener los datos:', err);
-    //     }
-    // };
-
-    // // Llamada a la tabla de bases 
-    // const getDataBases = async () => {
-    //     try {
-    //         const response = await axios.get("http://192.168.0.240:5000/api/data/bases");
-    //         setTablaBases(response.data);
-    //     } catch (err) {
-    //         console.error('Error al obtener los datos:', err);
-    //     }
-    // };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -94,14 +65,16 @@ export default function InputContainer() {
     };
 
 
-    // Funcion para borrar la barra de busqueda
+    // Función para borrar la barra de búsqueda
     const borrarBusqueda = () => {
         setBusqueda("");
         setHasSearched(false);
-        coloranteResultados.length = 0;
+        setColoranteResultados([]);
+        setSelectedSubProducto(null);  // Volver a null para deshabilitar el select de litros
         setTotalImporte(0);
         setPrecioBases(0);
-    }
+    };
+
 
 
     // Pa tomar el subproducto y completar los datos de la pintura ingresada
@@ -121,7 +94,16 @@ export default function InputContainer() {
 
     // Data de colorantes
     const obtenerColorantes = (litros) => {
-        if (!selectedSubProducto) return;
+        // Validar que se haya seleccionado un subproducto y que se haya seleccionado un valor válido para litros
+        if (!selectedSubProducto) {
+            console.warn("No se ha seleccionado un subproducto.");
+            return;
+        }
+
+        if (!litros || litros < 3 || litros > 6) {  // Asumiendo que los valores válidos de litros son entre 3 y 6
+            console.warn("Valor de litros no válido:", litros);
+            return;
+        }
 
         const colorantes = [];
 
@@ -136,7 +118,7 @@ export default function InputContainer() {
             }
         };
 
-        // Verificamos cada CodigoColorante y agregamos su correspondiente cantidad y precio
+        // Validar y agregar cada CodigoColorante
         if (selectedSubProducto.CodigoColorante1 && selectedSubProducto.CodigoColorante1 !== '0') {
             agregarColorante(selectedSubProducto.CodigoColorante1, selectedSubProducto[`Cantidad1_${litros}`]);
         }
@@ -168,12 +150,6 @@ export default function InputContainer() {
         setTotalImporte(importeTotal);
     }, [coloranteResultados]);
 
-    // Llamada para obtener los datos de las tablas
-    // useEffect(() => {
-    //     getData();
-    //     getDataPigmen();
-    //     getDataBases();
-    // }, []);
 
     const buscarLetraPorCodigo = (codigoColorante) => {
         const pigmentoEncontrado = tablaPigmentos.find((pigmento) => pigmento.Codigo === codigoColorante);
@@ -188,7 +164,16 @@ export default function InputContainer() {
 
     // Nueva función para obtener el CodigoBase según el litro seleccionado
     const obtenerCodigoBase = (litros) => {
-        if (!selectedSubProducto) return;
+        // Validar que se haya seleccionado un subproducto y que se haya seleccionado un valor válido para litros
+        if (!selectedSubProducto) {
+            console.warn("No se ha seleccionado un subproducto.");
+            return;
+        }
+
+        if (!litros || litros < 3 || litros > 6) {
+            console.warn("Valor de litros no válido:", litros);
+            return;
+        }
 
         let codigoBase = null;
         switch (litros) {
@@ -209,12 +194,11 @@ export default function InputContainer() {
         }
 
         if (codigoBase) {
-            // Buscar el valor del precio en la tabla de bases
             const baseEncontrada = tablaBases.find(base => base.Codigo === codigoBase);
             if (baseEncontrada) {
-                setPrecioBases(baseEncontrada.Precio)
+                setPrecioBases(baseEncontrada.Precio);
             } else {
-                console.log(`No se encontró la base con el código: ${codigoBase}`);
+                console.warn(`No se encontró la base con el código: ${codigoBase}`);
             }
         }
     };
@@ -245,7 +229,7 @@ export default function InputContainer() {
             {/* Importar la searchbar */}
             <SearchBar busqueda={busqueda} handleInputChange={handleInputChange} buscarSubProductos={buscarSubProductos} borrarBusqueda={borrarBusqueda} />
             {/* COMPONENTE DE SELECT PRODUCTOS */}
-            <SelectProductos subProductos={subProductos} handleSubProductoSelect={handleSubProductoSelect} handleLitrosSelect={handleLitrosSelect} hasSearched={hasSearched} />
+            <SelectProductos subProductos={subProductos} handleSubProductoSelect={handleSubProductoSelect} handleLitrosSelect={handleLitrosSelect} hasSearched={hasSearched} selectedSubProducto={selectedSubProducto} />
             {/* COMPONENTE DE TABLA COLORANTES */}
             <TablaColorantes coloranteResultados={coloranteResultados} generarFilasVacias={generarFilasVacias} />
             {/* Componente de ImporteTotal */}
