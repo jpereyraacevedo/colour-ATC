@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo  } from "react";
 import axios from "axios";
 import SearchBar from "../SearchBar/SearchBar";
 import SelectProductos from "../SelectProductos/SelectProductos";
@@ -19,7 +19,7 @@ export default function InputContainer() {
     const [tablaBases, setTablaBases] = useState([]);
     const [totalImporte, setTotalImporte] = useState(0);
     const [precioBases, setPrecioBases] = useState(0);
-    
+    const [loading, setLoading] = useState(false); // Estado para controlar la carga
 
     const handleInputChange = (event) => {
         const value = event.target.value;
@@ -35,6 +35,7 @@ export default function InputContainer() {
 
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true); // Inicia la carga
             try {
                 const [formulas, pigmentos, bases] = await Promise.all([
                     axios.get("http://192.168.0.240:5000/api/data/formulas"),
@@ -46,11 +47,23 @@ export default function InputContainer() {
                 setTablaBases(bases.data);
             } catch (err) {
                 console.error('Error al obtener los datos:', err);
+            } finally {
+                setLoading(false); // Termina la carga
             }
         };
         fetchData();
     }, []);
 
+
+    // // useMemo
+    // const ImporteTotal = ({ coloranteResultados }) => {
+    //     const totalImporte = useMemo(() => {
+    //         return coloranteResultados.reduce((total, resultado) => {
+    //             const importe = resultado.cantidad && resultado.precio ? resultado.cantidad * resultado.precio : 0;
+    //             return total + importe;
+    //         }, 0);
+    //     }, [coloranteResultados]);
+    // };
 
 
     // Con la barra de búsqueda filtra ese valor para mapear el select con los subproductos de ese código o fórmula
