@@ -23,6 +23,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-spinners": "^0.14.1",
+    "sweetalert2": "^11.14.3",
     "tw-elements-react": "^1.0.0-alpha-end",
     "uvcanvas": "^0.2.1"
   },

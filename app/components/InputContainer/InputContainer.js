@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Swal from 'sweetalert2'
 import SearchBar from "../SearchBar/SearchBar";
 import SelectProductos from "../SelectProductos/SelectProductos";
 import TablaColorantes from "../TablaColorantes/TablaColorantes";
@@ -33,6 +34,8 @@ export default function InputContainer() {
             setSelectedSubProducto(null);
             setColoranteResultados([]);
             setHasSearched(false);
+            setTituloFormula("");
+            setTituloBase("");
         }
     };
 
@@ -59,13 +62,30 @@ export default function InputContainer() {
 
     // Con la barra de búsqueda filtra ese valor para mapear el select con los subproductos de ese código o fórmula
     const buscarSubProductos = () => {
+        if (busqueda === "") {
+            Swal.fire({
+                icon: "error",
+                color: "#0154b8",
+                title: "Por favor ingrese un codigo",
+            });
+            return null;
+        }
+
         const resultadosBusqueda = tablaPinturas.filter((elemento) =>
-            elemento.Codigo.toLowerCase() === busqueda.toLowerCase() ||      // Busqueda en la columna Codigo
-            elemento.Formula.toLowerCase().includes(busqueda.toLowerCase()) // Busqueda en formula
+            elemento.Codigo.toLowerCase() === busqueda.toLowerCase() ||  // Búsqueda en la columna Codigo
+            elemento.Formula.toLowerCase().includes(busqueda.toLowerCase()) // Búsqueda en la columna Formula
         );
-        setSubProductos(resultadosBusqueda.map(item => item.SubProducto));
-        setSubProductosObjetos(resultadosBusqueda);
-        setHasSearched(true);
+
+        if (resultadosBusqueda.length === 0) {
+            Swal.fire({
+                color: "#0154b8",
+                title: "No hay coincidencias en la busqueda, ingrese un codigo valido.",
+            });
+        } else {
+            setSubProductos(resultadosBusqueda.map(item => item.SubProducto));
+            setSubProductosObjetos(resultadosBusqueda);
+            setHasSearched(true);
+        }
     };
 
 
@@ -234,17 +254,17 @@ export default function InputContainer() {
 
     return (
         <div className="mb-10 ancho-minimo">
-            <h2 className="my-2 mt-10 text-3xl text-center text-[#fc5273] font-bold border-y-2 py-3 border-[#fc5273]">Tintometría para HOGAR / OBRA</h2>
+            <h2 className="mx-2 mt-10 text-3xl text-center text-[#fc5273] font-bold border-y-2 py-3 border-[#fc5273]">Tintometría para HOGAR / OBRA</h2>
             {/* COMPONENTE BARRA DE BUSQUEDA */}
-            <SearchBar busqueda={ busqueda } handleInputChange={ handleInputChange } buscarSubProductos={ buscarSubProductos } borrarBusqueda={ borrarBusqueda}  />
+            <SearchBar busqueda={busqueda} handleInputChange={handleInputChange} buscarSubProductos={buscarSubProductos} borrarBusqueda={borrarBusqueda} />
             {/* COMPONENTE DE SELECT PRODUCTOS */}
-            <SelectProductos subProductos={ subProductos } handleSubProductoSelect={ handleSubProductoSelect } handleLitrosSelect={ handleLitrosSelect } hasSearched={ hasSearched } selectedSubProducto={ selectedSubProducto } />
+            <SelectProductos subProductos={subProductos} handleSubProductoSelect={handleSubProductoSelect} handleLitrosSelect={handleLitrosSelect} hasSearched={hasSearched} selectedSubProducto={selectedSubProducto} />
             {/* Titulo que se completa una vez obtenido el valor del select y de los litros */}
-            <h2 className="text-center font-bold text-[#0154b8] text-3xl">{ tituloFormula + " " + tituloBase }</h2>
+            <h2 className="text-center font-bold text-[#0154b8] text-3xl">{tituloFormula + " " + tituloBase}</h2>
             {/* COMPONENTE DE TABLA COLORANTES */}
-            <TablaColorantes coloranteResultados={ coloranteResultados } generarFilasVacias={ generarFilasVacias } />
+            <TablaColorantes coloranteResultados={coloranteResultados} generarFilasVacias={generarFilasVacias} />
             {/* CALCULO DE IMPORTE TOTAL */}
-            <ImporteTotal precioBases={ precioBases } totalImporte={ totalImporte } />
+            <ImporteTotal precioBases={precioBases} totalImporte={totalImporte} />
         </div>
     );
 }

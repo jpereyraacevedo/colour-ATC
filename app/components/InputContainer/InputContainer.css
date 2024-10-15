@@ -115,3 +115,7 @@
     transition: all 0.3s ease-out;
     transform: skewX(-45deg) scale(1, 1);
 }
+
+.swal2-styled {
+    background-color: #0154b8 !important;
+}
