@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo  } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import SearchBar from "../SearchBar/SearchBar";
 import SelectProductos from "../SelectProductos/SelectProductos";
@@ -20,6 +20,9 @@ export default function InputContainer() {
     const [totalImporte, setTotalImporte] = useState(0);
     const [precioBases, setPrecioBases] = useState(0);
     const [loading, setLoading] = useState(false); // Estado para controlar la carga
+    const [tituloFormula, setTituloFormula] = useState("")
+    const [tituloBase, setTituloBase] = useState("")
+
 
     const handleInputChange = (event) => {
         const value = event.target.value;
@@ -54,18 +57,6 @@ export default function InputContainer() {
         fetchData();
     }, []);
 
-
-    // // useMemo
-    // const ImporteTotal = ({ coloranteResultados }) => {
-    //     const totalImporte = useMemo(() => {
-    //         return coloranteResultados.reduce((total, resultado) => {
-    //             const importe = resultado.cantidad && resultado.precio ? resultado.cantidad * resultado.precio : 0;
-    //             return total + importe;
-    //         }, 0);
-    //     }, [coloranteResultados]);
-    // };
-
-
     // Con la barra de búsqueda filtra ese valor para mapear el select con los subproductos de ese código o fórmula
     const buscarSubProductos = () => {
         const resultadosBusqueda = tablaPinturas.filter((elemento) =>
@@ -86,8 +77,9 @@ export default function InputContainer() {
         setSelectedSubProducto(null);  // Volver a null para deshabilitar el select de litros
         setTotalImporte(0);
         setPrecioBases(0);
+        setTituloFormula("");
+        setTituloBase("");
     };
-
 
 
     // Pa tomar el subproducto y completar los datos de la pintura ingresada
@@ -103,6 +95,11 @@ export default function InputContainer() {
         setSelectedLitros(litros);
         obtenerColorantes(litros);
         obtenerCodigoBase(litros);
+
+        if (selectedSubProducto) {
+            setTituloFormula(selectedSubProducto.Formula)
+            setTituloBase(selectedSubProducto.Base)
+        }
     };
 
     // Data de colorantes
@@ -113,7 +110,7 @@ export default function InputContainer() {
             return;
         }
 
-        if (!litros || litros < 3 || litros > 6) {  // Asumiendo que los valores válidos de litros son entre 3 y 6
+        if (!litros || litros < 3 || litros > 6) {  // Entre 3 y 6 porque en los value de las tablas son 3, 4, 5, y 6
             console.warn("Valor de litros no válido:", litros);
             return;
         }
@@ -237,16 +234,17 @@ export default function InputContainer() {
 
     return (
         <div className="mb-10 ancho-minimo">
-            <h2 className="my-2 mt-10 text-3xl text-center text-[#fc5273] font-bold">Tintometría para HOGAR/OBRA</h2>
-            <hr />
-            {/* Importar la searchbar */}
-            <SearchBar busqueda={busqueda} handleInputChange={handleInputChange} buscarSubProductos={buscarSubProductos} borrarBusqueda={borrarBusqueda} />
+            <h2 className="my-2 mt-10 text-3xl text-center text-[#fc5273] font-bold border-y-2 py-3 border-[#fc5273]">Tintometría para HOGAR / OBRA</h2>
+            {/* COMPONENTE BARRA DE BUSQUEDA */}
+            <SearchBar busqueda={ busqueda } handleInputChange={ handleInputChange } buscarSubProductos={ buscarSubProductos } borrarBusqueda={ borrarBusqueda}  />
             {/* COMPONENTE DE SELECT PRODUCTOS */}
-            <SelectProductos subProductos={subProductos} handleSubProductoSelect={handleSubProductoSelect} handleLitrosSelect={handleLitrosSelect} hasSearched={hasSearched} selectedSubProducto={selectedSubProducto} />
+            <SelectProductos subProductos={ subProductos } handleSubProductoSelect={ handleSubProductoSelect } handleLitrosSelect={ handleLitrosSelect } hasSearched={ hasSearched } selectedSubProducto={ selectedSubProducto } />
+            {/* Titulo que se completa una vez obtenido el valor del select y de los litros */}
+            <h2 className="text-center font-bold text-[#0154b8] text-3xl">{ tituloFormula + " " + tituloBase }</h2>
             {/* COMPONENTE DE TABLA COLORANTES */}
-            <TablaColorantes coloranteResultados={coloranteResultados} generarFilasVacias={generarFilasVacias} />
-            {/* Componente de ImporteTotal */}
-            <ImporteTotal precioBases={precioBases} totalImporte={totalImporte} />
+            <TablaColorantes coloranteResultados={ coloranteResultados } generarFilasVacias={ generarFilasVacias } />
+            {/* CALCULO DE IMPORTE TOTAL */}
+            <ImporteTotal precioBases={ precioBases } totalImporte={ totalImporte } />
         </div>
     );
 }

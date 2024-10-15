@@ -3,12 +3,12 @@ const ImporteTotal = ({ precioBases, totalImporte }) => (
     <div className="flex flex-col">
       <p>Importe base</p>
       <p>Importe colorante</p>
-      <p>Importe TOTAL</p>
+      <p className="border-y-2 py-1 border-[#fc5273]">Importe TOTAL</p>
     </div>
     <div className="flex flex-col text-end">
       <p>{`$ ${precioBases.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}</p>
       <p>{`$ ${totalImporte.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}</p>
-      <p>{`$ ${(totalImporte + precioBases).toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}</p>
+      <p className="border-y-2 py-1 border-[#fc5273]">{`$ ${(totalImporte + precioBases).toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}</p>
     </div>
   </div>
 );

@@ -1,4 +1,4 @@
-import { Input, Button} from "@material-tailwind/react";
+import { Input, Button } from "@material-tailwind/react";
 
 const SearchBar = ({ busqueda, handleInputChange, buscarSubProductos, borrarBusqueda }) => (
   <div className="flex flex-col m-2 items-center justify-center md:flex-row">

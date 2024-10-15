@@ -44,7 +44,7 @@ export default function Header() {
             </PopoverPanel>
           </Popover>
           <a href="#" className="text-sm font-semibold leading-6 nav-links border-b-2 border-white hover:border-[#fc5273] duration-300">
-            Realizar otro presupuesto
+            Tintometria para Automotor
           </a>
           <a href="#" className="text-sm font-semibold leading-6 nav-links border-b-2 border-white hover:border-[#fc5273] duration-300">
             Enviar los presupuestos
