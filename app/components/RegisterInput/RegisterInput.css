@@ -32,3 +32,7 @@
 .input-password {
   color: rgb(71, 71, 71);
 }
+
+.swal2-styled {
+  background-color: #0154b8 !important;
+}

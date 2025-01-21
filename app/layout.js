@@ -3,7 +3,7 @@ import { ClassProvider } from "./Context";
 
 
 export const metadata = {
-  title: "A Todo Color | Tintometria",
+  title: "A Todo Color | Tintometría",
   description: "A Todo Color pinturerias",
 };
 
