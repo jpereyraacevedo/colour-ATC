@@ -12,6 +12,12 @@
   font-family: 'Roboto', sans-serif; 
 }
 
+:root {
+  --primary-color: #0154b8;
+  --secondary-color: #fc5273;
+}
+
+
 .bg-container {
   background: #fc5273;
   background: linear-gradient(0deg, #fc5273 20%, #0154b8 90%);

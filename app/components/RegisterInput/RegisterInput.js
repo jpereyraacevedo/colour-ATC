@@ -13,6 +13,7 @@ const RegisterInput = () => {
   const [number, setNumber] = useState("");
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
+  const [configurations, setConfigurations] = useState({ bases: 0, colorantes: 0 });
   const [error, setError] = useState('');
   const router = useRouter();
 
@@ -30,7 +31,7 @@ const RegisterInput = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, email, number, password }),
+        body: JSON.stringify({ username, email, number, password, configurations }),
       });
 
       const data = await response.json();
@@ -45,12 +46,15 @@ const RegisterInput = () => {
           text: "Para confirmar el usuario, por favor, contactarse con soporte@atodocolor.com, en caso contrario el usuario no sera dado de alta y no será funcional",
           showConfirmButton: true,
         });
+        console.log('Datos enviados:', { username, email, number, password, configurations });
         // Limpiar el formulario
         setUsername('');
         setEmail('');
         setPassword('');
+        setConfigurations({});
         // Redirigir al usuario a la página de inicio de sesión
         router.push('/'); // Cambia '/login' después del registro
+
       } else {
         setError(data.message || 'Error de registro');
       }

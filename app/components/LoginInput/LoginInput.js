@@ -1,14 +1,18 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useContext  } from 'react';
+import { ClassContext } from '../../Context';
 import { useRouter } from 'next/navigation'; 
-import "./LoginInput.css"
 import Link from 'next/link';
+import "./LoginInput.css"
 
 const LoginInput = () => {
-  const [username, setUsername] = useState('');
+  // const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
+
+  const { username, setUsername } = useContext(ClassContext);
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -27,6 +31,8 @@ const LoginInput = () => {
       if (response.ok) {
         localStorage.setItem('token', data.token);
         router.push('/main');
+        console.log(username)
+        console.log(data)
       } else {
         setError(data.message || 'Error de autenticación');
       }
