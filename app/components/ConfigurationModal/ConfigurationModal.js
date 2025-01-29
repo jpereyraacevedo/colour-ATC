@@ -32,8 +32,8 @@ const ConfigurationModal = ({ onClose }) => {
       setTimeout(() => {
         setIsSaved(false); // Oculta el mensaje de éxito
         onClose(); // Cierra el modal
-      }, 1500); // Mantiene el mensaje de éxito visible por 1.5 segundos
-    }, 1000); // Simula un proceso de guardado de 1 segundo
+      }, 2000); // Mantiene el mensaje de éxito visible por 1.5 segundos
+    }, 1500); // Simula un proceso de guardado de 1 segundo
   };
 
   return (
