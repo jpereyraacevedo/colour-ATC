@@ -1,17 +1,121 @@
 .input-design {
     width: 224px;
     color: #0154b8;
-    outline: #0154b8;
+    outline: none;
+    /* Ajuste para evitar borde de outline */
     font-weight: 700;
 }
 
-.search-btn {
-    border-radius: 5px;
-    padding: 10px;
-    background-color: #0154b8;
-    color: white;
+.ancho-minimo {
+    min-height: 700px !important;
 }
 
-.search-btn:hover {
-    background-color: #F85778;
+@media (min-width: 900px) {
+    .ancho-minimo {
+        width: 900px !important;
+    }
+}
+
+/* Zebra stripes para filas alternadas */
+.zebra-row:nth-child(odd) {
+    background-color: #fff;
+}
+
+.zebra-row:nth-child(even) {
+    background-color: #a7bcf0;
+}
+
+.desactivado {
+    height: 40px;
+    background-color: transparent;
+    /* Fondo transparente */
+}
+
+/*** ESTILOS BOTÓN GROW SKEW ***/
+.ov-btn-grow-skew {
+    background: #fff;
+    /* color de fondo */
+    color: #0154b8;
+    /* color de fuente */
+    border: 2px solid #0154b8;
+    /* tamaño y color de borde */
+    padding: 0px 20px;
+    border-radius: 3px;
+    /* redondear bordes */
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.ov-btn-grow-skew:hover {
+    color: #fff;
+    /* color de fuente hover */
+}
+
+.ov-btn-grow-skew::after {
+    content: "";
+    background: #0154b8;
+    /* color de fondo hover */
+    position: absolute;
+    z-index: -1;
+    padding: 16px 20px;
+    display: block;
+    left: -20%;
+    right: -20%;
+    top: 0;
+    bottom: 0;
+    transform: skewX(-45deg) scale(0, 1);
+    transition: all 0.3s ease;
+}
+
+.ov-btn-grow-skew:hover::after {
+    transition: all 0.3s ease-out;
+    transform: skewX(-45deg) scale(1, 1);
+}
+
+.ov-btn-grow-skew-borrar {
+    background: #fff;
+    /* color de fondo */
+    color: red;
+    /* color de fuente */
+    border: 2px solid red;
+    /* tamaño y color de borde */
+    padding: 0px 20px;
+    border-radius: 3px;
+    /* redondear bordes */
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.ov-btn-grow-skew-borrar:hover {
+    color: #fff;
+    /* color de fuente hover */
+}
+
+.ov-btn-grow-skew-borrar::after {
+    content: "";
+    background: red;
+    /* color de fondo hover */
+    position: absolute;
+    z-index: -1;
+    padding: 16px 20px;
+    display: block;
+    left: -20%;
+    right: -20%;
+    top: 0;
+    bottom: 0;
+    transform: skewX(-45deg) scale(0, 1);
+    transition: all 0.3s ease;
+}
+
+.ov-btn-grow-skew-borrar:hover::after {
+    transition: all 0.3s ease-out;
+    transform: skewX(-45deg) scale(1, 1);
+}
+
+.swal2-styled {
+    background-color: #0154b8 !important;
 }

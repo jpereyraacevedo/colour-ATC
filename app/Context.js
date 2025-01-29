@@ -5,14 +5,19 @@ export const ClassContext = createContext();
 
 export const ClassProvider = ({ children }) => {
   const [isActive, setIsActive] = useState(true);
+  const [username, setUsername] = useState('');
 
-  // Cambiar la función para aceptar un valor booleano
   const footerActive = (active) => {
     setIsActive(active);
   };
 
   return (
-    <ClassContext.Provider value={{ isActive, footerActive }}>
+    <ClassContext.Provider value={{ 
+      isActive, 
+      footerActive,
+      username, 
+      setUsername
+      }}>
       {children}
     </ClassContext.Provider>
   );

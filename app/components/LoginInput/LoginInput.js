@@ -1,20 +1,24 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useContext  } from 'react';
+import { ClassContext } from '../../Context';
 import { useRouter } from 'next/navigation'; 
-import "./LoginInput.css"
 import Link from 'next/link';
+import "./LoginInput.css"
 
 const LoginInput = () => {
-  const [username, setUsername] = useState('');
+  // const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
+
+  const { username, setUsername } = useContext(ClassContext);
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:5000/api/users/login', {
+      const response = await fetch('http://192.168.0.240:5000/api/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -27,6 +31,8 @@ const LoginInput = () => {
       if (response.ok) {
         localStorage.setItem('token', data.token);
         router.push('/main');
+        console.log(username)
+        console.log(data)
       } else {
         setError(data.message || 'Error de autenticación');
       }

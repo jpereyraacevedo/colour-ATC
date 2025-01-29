@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Swal from 'sweetalert2'
 import Image from "next/image"
 import Link from 'next/link';
 import 'animate.css';
@@ -9,7 +10,10 @@ import "./RegisterInput.css";
 const RegisterInput = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
+  const [number, setNumber] = useState("");
   const [password, setPassword] = useState('');
+  const [repeatPassword, setRepeatPassword] = useState('');
+  const [configurations, setConfigurations] = useState({ bases: 0, colorantes: 0 });
   const [error, setError] = useState('');
   const router = useRouter();
 
@@ -22,12 +26,12 @@ const RegisterInput = () => {
     // Poner mas validaciones 
 
     try {
-      const response = await fetch('http://localhost:5000/api/users/register', {
+      const response = await fetch('http://192.168.0.240:5000/api/users/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, email, password }),
+        body: JSON.stringify({ username, email, number, password, configurations }),
       });
 
       const data = await response.json();
@@ -35,13 +39,22 @@ const RegisterInput = () => {
       if (response.ok) {
         // Guardar token en localStorage
         localStorage.setItem('token', data.token);
-        alert('Registro exitoso');
+        Swal.fire({
+          icon: "success",
+          color: "#0154b8",
+          title: "Registro exitoso",
+          text: "Para confirmar el usuario, por favor, contactarse con soporte@atodocolor.com, en caso contrario el usuario no sera dado de alta y no será funcional",
+          showConfirmButton: true,
+        });
+        console.log('Datos enviados:', { username, email, number, password, configurations });
         // Limpiar el formulario
         setUsername('');
         setEmail('');
         setPassword('');
+        setConfigurations({});
         // Redirigir al usuario a la página de inicio de sesión
         router.push('/'); // Cambia '/login' después del registro
+
       } else {
         setError(data.message || 'Error de registro');
       }
@@ -92,11 +105,31 @@ const RegisterInput = () => {
               />
             </div>
             <div className="mt-5">
+              <label htmlFor="password" className="block text-sm font-medium leading-6 text-white font-extrabold">Numero de telefono</label>
+              <input
+                type="text"
+                value={number}
+                onChange={(e) => setNumber(e.target.value)}
+                required
+                className="block w-full rounded-md border-0 p-1.5 shadow-sm sm:text-sm sm:leading-6 mt-1 input-login"
+              />
+            </div>
+            <div className="mt-5">
               <label htmlFor="password" className="block text-sm font-medium leading-6 text-white font-extrabold">Contraseña</label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
+                className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-900 sm:text-sm sm:leading-6 input-password"
+              />
+            </div>
+            <div className="mt-5">
+              <label htmlFor="password" className="block text-sm font-medium leading-6 text-white font-extrabold">Repita la contraseña</label>
+              <input
+                type="password"
+                value={repeatPassword}
+                onChange={(e) => setRepeatPassword(e.target.value)}
                 required
                 className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-900 sm:text-sm sm:leading-6 input-password"
               />

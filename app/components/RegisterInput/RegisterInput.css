@@ -12,7 +12,7 @@
 }
 
 .color-btn-atc:hover {
-  color: #F85778;
+  color: #fc5273;
   background-color: white;
 }
 
@@ -24,12 +24,6 @@
   transform: translateY(-40px) !important;
 }
 
-/* 
-.animacion-santi {
-  transform: translateY(-100px);
-  animation-duration: 2000ms;
-} */
-
 .input-login {
   color: #0154b8;
   font-weight: 700;
@@ -37,4 +31,8 @@
 
 .input-password {
   color: rgb(71, 71, 71);
+}
+
+.swal2-styled {
+  background-color: #0154b8 !important;
 }
