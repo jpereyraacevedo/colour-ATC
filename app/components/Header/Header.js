@@ -113,9 +113,11 @@
 //   )
 // }
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { ClassContext } from '../../Context';
 import ConfigurationModal from "../ConfigurationModal/ConfigurationModal";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import { FaBars, FaTimes, FaUser } from "react-icons/fa";
 
@@ -123,6 +125,8 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false); // Estado para el menú hamburguesa
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); // Estado para el popup de usuario
   const [isModalOpen, setIsModalOpen] = useState(false); // Estado para el modal
+  const { userData, setUserData } = useContext(ClassContext);
+  const router = useRouter();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -147,6 +151,14 @@ const Header = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  // Cerrar sesion
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userData");
+    setUserData(null);
+    router.push("/");
   };
 
   return (
@@ -202,7 +214,7 @@ const Header = () => {
             onClick={toggleUserMenu}
           >
             <FaUser className="text-xl" />
-            <span>Hola Usuario</span>
+            <span>Hola <span className="font-bold">{userData?.username}</span></span>
           </div>
 
           {/* User Menu Popup */}
@@ -218,7 +230,7 @@ const Header = () => {
                 >
                   Configuración
                 </li>
-                <li className="py-2 px-4 hover:bg-gray-100 hover:font-bold rounded-lg cursor-pointer">
+                <li className="py-2 px-4 hover:bg-gray-100 hover:font-bold rounded-lg cursor-pointer" onClick={handleLogout}>
                   Cerrar Sesión
                 </li>
               </ul>

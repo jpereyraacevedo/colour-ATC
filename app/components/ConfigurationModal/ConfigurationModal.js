@@ -22,19 +22,115 @@ const ConfigurationModal = ({ onClose }) => {
     }));
   };
 
+
   // Maneja el guardado de datos
-  const handleSave = () => {
-    setIsSaving(true); // Muestra el spinner
-    setTimeout(() => {
-      console.log('Datos guardados:', inputs); // Puedes usar estos datos donde los necesites
-      setIsSaving(false); // Oculta el spinner
-      setIsSaved(true); // Muestra el mensaje de éxito
-      setTimeout(() => {
-        setIsSaved(false); // Oculta el mensaje de éxito
-        onClose(); // Cierra el modal
-      }, 2000); // Mantiene el mensaje de éxito visible por 1.5 segundos
-    }, 1500); // Simula un proceso de guardado de 1 segundo
-  };
+  // const handleSave = () => {
+  //   setIsSaving(true); // Muestra el spinner
+  //   setTimeout(() => {
+  //     console.log('Datos guardados:', inputs); // Puedes usar estos datos donde los necesites
+  //     setIsSaving(false); // Oculta el spinner
+  //     setIsSaved(true); // Muestra el mensaje de éxito
+  //     setTimeout(() => {
+  //       setIsSaved(false); // Oculta el mensaje de éxito
+  //       onClose(); // Cierra el modal
+  //     }, 2000); // Mantiene el mensaje de éxito visible por 1.5 segundos
+  //   }, 1500); // Simula un proceso de guardado de 1 segundo
+  // };
+
+  const handleSave = async () => {
+    console.log("🔵 Iniciando guardado...");
+    setIsSaving(true);
+
+    try {
+        // Obtiene los datos del usuario desde localStorage
+        const userDataString = localStorage.getItem('userData');
+
+        if (!userDataString) {
+            console.error("❌ No se encontró `userData` en localStorage.");
+            throw new Error("No se encontró `userData` en localStorage.");
+        }
+
+        const userData = JSON.parse(userDataString);
+        console.log("🟢 Datos del usuario obtenidos de localStorage:", userData);
+
+        // Verifica que el objeto userData tenga un _id válido
+        // if (!userData._id) {
+        //     console.error("❌ `_id` no encontrado en userData:", userData);
+        //     throw new Error("No se encontró `_id` en los datos del usuario.");
+        // }
+
+        // Verifica que 'inputs' tenga valores correctos
+        if (!inputs || typeof inputs !== "object") {
+            console.error("❌ `inputs` no es válido:", inputs);
+            throw new Error("Los datos de configuración no son válidos.");
+        }
+
+        console.log("🟡 Inputs actuales:", inputs);
+
+        // Crea el cuerpo de la petición con los datos a enviar
+        const requestBody = {
+            userId: userData.id, // Asegura que el ID del usuario es correcto
+            configurations: {
+                bases: inputs.bases ?? 0,   // Usa 0 si bases es undefined
+                colorantes: inputs.colorantes ?? 0 // Usa 0 si colorantes es undefined
+            }
+        };
+
+        console.log("📤 Enviando datos al backend:", requestBody);
+
+        // Realiza la solicitud al backend
+        const response = await fetch('http://192.168.0.240:5000/api/users/update-config', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody),
+        });
+
+        console.log("📥 Respuesta del backend recibida");
+
+        // Intenta parsear la respuesta del backend
+        let data;
+        try {
+            data = await response.json();
+        } catch (parseError) {
+            console.error("❌ Error al parsear respuesta del backend", parseError);
+            throw new Error("Error al procesar la respuesta del servidor.");
+        }
+
+        console.log("🟢 Datos recibidos del backend:", data);
+
+        if (!response.ok) {
+            console.error("🔴 Error en la respuesta del backend:", data);
+            throw new Error(data.message || "Error al actualizar configuración.");
+        }
+
+        // Actualiza `localStorage` con la nueva configuración recibida
+        const updatedUserData = {
+            ...userData,
+            configurations: {
+                ...userData.configurations, // Mantiene otros valores previos
+                bases: data.configurations.bases,
+                colorantes: data.configurations.colorantes
+            }
+        };
+
+        localStorage.setItem('userData', JSON.stringify(updatedUserData));
+
+        console.log("✅ Configuración guardada en localStorage:", updatedUserData);
+
+        // Estado de guardado exitoso
+        setIsSaving(false);
+        setIsSaved(true);
+        setTimeout(() => {
+            setIsSaved(false);
+            onClose();
+        }, 2000);
+    } catch (error) {
+        console.error("🔴 Error al guardar:", error.message);
+        setIsSaving(false);
+    }
+};
+
+
 
   return (
     <div className="bg-white rounded-lg p-6 w-96 relative">

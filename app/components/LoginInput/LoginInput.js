@@ -1,17 +1,17 @@
 "use client";
-import React, { useState, useContext  } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { ClassContext } from '../../Context';
-import { useRouter } from 'next/navigation'; 
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import "./LoginInput.css"
 
 const LoginInput = () => {
-  // const [username, setUsername] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
 
-  const { username, setUsername } = useContext(ClassContext);
+  const { userData, setUserData, isLoading } = useContext(ClassContext);
 
 
   const handleLogin = async (e) => {
@@ -20,19 +20,19 @@ const LoginInput = () => {
     try {
       const response = await fetch('http://192.168.0.240:5000/api/users/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }), // Enviar username
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
         localStorage.setItem('token', data.token);
+        localStorage.setItem('userData', JSON.stringify(data.user)); // Guarda los datos del usuario
+        console.log(data.user)
+
+        setUserData(data.user); // Guarda en el estado global del contexto
         router.push('/main');
-        console.log(username)
-        console.log(data)
       } else {
         setError(data.message || 'Error de autenticación');
       }
@@ -40,6 +40,18 @@ const LoginInput = () => {
       setError('Error en el servidor');
     }
   };
+
+
+
+  useEffect(() => {
+    if (!isLoading && userData) {
+      router.push("/main"); // Solo redirige cuando la carga ha terminado
+    }
+  }, [isLoading, userData]);
+
+  if (isLoading) {
+    return <p style={{ color: "white" }}>Cargando sesión...</p>;
+  }
 
   return (
     <div className="mt-10">

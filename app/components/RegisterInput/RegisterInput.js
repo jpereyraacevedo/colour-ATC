@@ -19,6 +19,7 @@ const RegisterInput = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+
     // Validar longitud de la contraseña
     if (password.length < 5) {
       return setError('La contraseña debe tener al menos 6 caracteres.');
