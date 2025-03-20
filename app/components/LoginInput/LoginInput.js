@@ -41,17 +41,15 @@ const LoginInput = () => {
     }
   };
 
-
-
   useEffect(() => {
-    if (!isLoading && userData) {
-      router.push("/main"); // Solo redirige cuando la carga ha terminado
+    const token = localStorage.getItem("token");
+
+    if (!isLoading) {
+      if (token && userData?.id) {
+        router.push("/main"); // Solo redirige si hay token y datos de usuario
+      }
     }
   }, [isLoading, userData]);
-
-  if (isLoading) {
-    return <p style={{ color: "white" }}>Cargando sesión...</p>;
-  }
 
   return (
     <div className="mt-10">
