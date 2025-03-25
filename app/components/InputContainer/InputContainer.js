@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Fuse from 'fuse.js';
 import Swal from 'sweetalert2'
 import SearchBar from "../SearchBar/SearchBar";
 import SelectProductos from "../SelectProductos/SelectProductos";
@@ -13,11 +14,15 @@ export default function InputContainer() {
     const [subProductos, setSubProductos] = useState([]);
     const [selectedSubProducto, setSelectedSubProducto] = useState(null);
     const [selectedLitros, setSelectedLitros] = useState(null);
+    // Busqueda de formula
     const [hasSearched, setHasSearched] = useState(false);
     const [coloranteResultados, setColoranteResultados] = useState([]);
     const [subProductosObjetos, setSubProductosObjetos] = useState([]);
     const [tablaPigmentos, setTablaPigmentos] = useState([]);
     const [tablaBases, setTablaBases] = useState([]);
+    const [tablaArticulos, setTablaArticulos] = useState([]);
+    const [searchTerm, setSearchTerm] = useState(""); // Estado para la búsqueda de articulo / bases
+    const [filteredArticulos, setFilteredArticulos] = useState([]);
     const [totalImporte, setTotalImporte] = useState(0);
     const [precioBases, setPrecioBases] = useState(0);
     const [loading, setLoading] = useState(false); // Estado para controlar la carga
@@ -43,14 +48,16 @@ export default function InputContainer() {
         const fetchData = async () => {
             setLoading(true); // Inicia la carga
             try {
-                const [formulas, pigmentos, bases] = await Promise.all([
+                const [formulas, pigmentos, bases, articulos] = await Promise.all([
                     axios.get("http://192.168.0.240:5000/api/data/formulas"),
                     axios.get("http://192.168.0.240:5000/api/data/pigmentos"),
                     axios.get("http://192.168.0.240:5000/api/data/bases"),
+                    axios.get("http://192.168.0.240:5000/api/data/articulos")
                 ]);
                 setTablaPinturas(formulas.data);
                 setTablaPigmentos(pigmentos.data);
                 setTablaBases(bases.data);
+                setTablaArticulos(articulos.data);
             } catch (err) {
                 console.error('Error al obtener los datos:', err);
             } finally {
@@ -171,6 +178,28 @@ export default function InputContainer() {
         setColoranteResultados(colorantes);
     };
 
+    // Busqueda por articulo / bases
+    // useEffect(() => {
+    //     // Filtrar los artículos en base a la búsqueda
+    //     const resultados = tablaArticulos.filter(articulo =>
+    //         articulo.DESCRI.toLowerCase().includes(searchTerm.toLowerCase()) // Comparación case-insensitive
+    //     );
+    //     setFilteredArticulos(resultados);
+    // }, [searchTerm, tablaArticulos]);
+
+    useEffect(() => {
+        // Opciones de Fuse.js
+        const options = {
+            keys: ['DESCRI'],
+            threshold: 0.3, // Permite cierta tolerancia a errores
+        };
+
+        const fuse = new Fuse(tablaArticulos, options);
+        const resultados = searchTerm ? fuse.search(searchTerm).map(result => result.item) : tablaArticulos;
+        
+        setFilteredArticulos(resultados);
+    }, [searchTerm, tablaArticulos]);
+
     // Sumatoria final
     useEffect(() => {
         const importeTotal = coloranteResultados.reduce((total, resultado) => {
@@ -258,7 +287,7 @@ export default function InputContainer() {
             {/* COMPONENTE BARRA DE BUSQUEDA */}
             <SearchBar busqueda={busqueda} handleInputChange={handleInputChange} buscarSubProductos={buscarSubProductos} borrarBusqueda={borrarBusqueda} />
             {/* COMPONENTE DE SELECT PRODUCTOS */}
-            <SelectProductos subProductos={subProductos} handleSubProductoSelect={handleSubProductoSelect} handleLitrosSelect={handleLitrosSelect} hasSearched={hasSearched} selectedSubProducto={selectedSubProducto} />
+            <SelectProductos subProductos={subProductos} handleSubProductoSelect={handleSubProductoSelect} handleLitrosSelect={handleLitrosSelect} hasSearched={hasSearched} selectedSubProducto={selectedSubProducto} searchTerm={searchTerm} setSearchTerm={setSearchTerm} options={filteredArticulos.map(a => a.DESCRI)} />
             {/* Titulo que se completa una vez obtenido el valor del select y de los litros */}
             <h2 className="text-center font-bold text-[#0154b8] text-3xl">{tituloFormula + " " + tituloBase}</h2>
             {/* COMPONENTE DE TABLA COLORANTES */}
