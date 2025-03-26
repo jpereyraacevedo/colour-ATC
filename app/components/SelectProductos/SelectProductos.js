@@ -8,7 +8,8 @@ const SelectProductos = ({
   selectedSubProducto, 
   searchTerm, 
   setSearchTerm, 
-  options 
+  options,
+  setPrecioBases
 }) => {
   const [filteredOptions, setFilteredOptions] = useState([]);
 

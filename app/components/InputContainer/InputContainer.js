@@ -58,6 +58,8 @@ export default function InputContainer() {
                 setTablaPigmentos(pigmentos.data);
                 setTablaBases(bases.data);
                 setTablaArticulos(articulos.data);
+                console.log(articulos.data)
+                console.log('Esto es bases data')
             } catch (err) {
                 console.error('Error al obtener los datos:', err);
             } finally {
@@ -287,7 +289,7 @@ export default function InputContainer() {
             {/* COMPONENTE BARRA DE BUSQUEDA */}
             <SearchBar busqueda={busqueda} handleInputChange={handleInputChange} buscarSubProductos={buscarSubProductos} borrarBusqueda={borrarBusqueda} />
             {/* COMPONENTE DE SELECT PRODUCTOS */}
-            <SelectProductos subProductos={subProductos} handleSubProductoSelect={handleSubProductoSelect} handleLitrosSelect={handleLitrosSelect} hasSearched={hasSearched} selectedSubProducto={selectedSubProducto} searchTerm={searchTerm} setSearchTerm={setSearchTerm} options={filteredArticulos.map(a => a.DESCRI)} />
+            <SelectProductos subProductos={subProductos} handleSubProductoSelect={handleSubProductoSelect} handleLitrosSelect={handleLitrosSelect} hasSearched={hasSearched} selectedSubProducto={selectedSubProducto} searchTerm={searchTerm} setSearchTerm={setSearchTerm} options={filteredArticulos.map(a => a.DESCRI)} precioBases={setPrecioBases} />
             {/* Titulo que se completa una vez obtenido el valor del select y de los litros */}
             <h2 className="text-center font-bold text-[#0154b8] text-3xl">{tituloFormula + " " + tituloBase}</h2>
             {/* COMPONENTE DE TABLA COLORANTES */}
