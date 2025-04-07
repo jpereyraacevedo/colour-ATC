@@ -283,13 +283,18 @@ export default function InputContainer() {
         ));
     };
 
+    const handleBaseSeleccionada = (base) => {
+        console.log("Base seleccionada en el padre:", base);
+        // Acá podés guardar el valor en un estado, hacer una consulta, etc.
+      };
+
     return (
         <div className="mb-10 ancho-minimo">
             <h2 className="mx-2 mt-10 text-3xl text-center text-[#fc5273] font-bold border-y-2 py-3 border-[#fc5273]">Tintometría para HOGAR / OBRA</h2>
             {/* COMPONENTE BARRA DE BUSQUEDA */}
             <SearchBar busqueda={busqueda} handleInputChange={handleInputChange} buscarSubProductos={buscarSubProductos} borrarBusqueda={borrarBusqueda} />
             {/* COMPONENTE DE SELECT PRODUCTOS */}
-            <SelectProductos subProductos={subProductos} handleSubProductoSelect={handleSubProductoSelect} handleLitrosSelect={handleLitrosSelect} hasSearched={hasSearched} selectedSubProducto={selectedSubProducto} searchTerm={searchTerm} setSearchTerm={setSearchTerm} options={filteredArticulos.map(a => a.DESCRI)} precioBases={setPrecioBases} />
+            <SelectProductos subProductos={subProductos} handleSubProductoSelect={handleSubProductoSelect} handleLitrosSelect={handleLitrosSelect} hasSearched={hasSearched} selectedSubProducto={selectedSubProducto} searchTerm={searchTerm} setSearchTerm={setSearchTerm} options={filteredArticulos.map(a => a.DESCRI)} precioBases={setPrecioBases} onBaseSelect={handleBaseSeleccionada} />
             {/* Titulo que se completa una vez obtenido el valor del select y de los litros */}
             <h2 className="text-center font-bold text-[#0154b8] text-3xl">{tituloFormula + " " + tituloBase}</h2>
             {/* COMPONENTE DE TABLA COLORANTES */}

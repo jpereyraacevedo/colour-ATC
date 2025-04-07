@@ -9,7 +9,8 @@ const SelectProductos = ({
   searchTerm, 
   setSearchTerm, 
   options,
-  setPrecioBases
+  setPrecioBases,
+  onBaseSelect
 }) => {
   const [filteredOptions, setFilteredOptions] = useState([]);
 
@@ -30,8 +31,11 @@ const SelectProductos = ({
 
   const handleSelectOption = (option) => {
     setSearchTerm(option);
-    setFilteredOptions([]); // Cerrar lista de sugerencias
+    setFilteredOptions([]);
+    console.log("Opción seleccionada:", option);
+    onBaseSelect && onBaseSelect(option); // llamás al padre
   };
+  
 
   return (
     <div className="flex flex-col md:flex-row m-2 items-center justify-center">
