@@ -1,9 +1,9 @@
 import { Card, Typography, Input} from "@material-tailwind/react";
 
-const TablaColorantes = ({ coloranteResultados, generarFilasVacias }) => (
+const TablaColorantes = ({ coloranteResultados, generarFilasVacias, actualizarCantidadColorante }) => (
   <Card className="w-full">
     <h2 className="text-center my-2">{ }</h2>
-    <div className="grid grid-cols-4 gap-4 text-left p-2 min-w-full font-bold bg-[#0154b8] text-white text-center">
+    <div className="grid grid-cols-4 gap-4 text-left p-2 min-w-full font-bold bg-[var(--primary-color)] text-white text-center">
       <div>Colorante</div>
       <div>Cantidad</div>
       <div>Precio</div>
@@ -21,24 +21,24 @@ const TablaColorantes = ({ coloranteResultados, generarFilasVacias }) => (
                     type="text"
                     value={resultado.colorante || ""}
                     readOnly
-                    className="text-[#0154b8] border rounded p-2 font-bold text-center"
+                    className="text-[var(--primary-color)] border rounded p-2 font-bold text-center"
                   />
                 </div>
                 <div style={{ minWidth: "100px" }}>
                   <Input
-                    type="text"
+                    type="number"
+                    onChange={(e) => actualizarCantidadColorante(index, e.target.value)}
                     value={resultado.cantidad ? resultado.cantidad.toFixed(2) : ""} // Formatear cantidad a 2 decimales
-                    readOnly
-                    className="text-[#0154b8] border rounded p-2 font-bold text-end"
+                    className="text-[var(--primary-color)] focus:text-[var(--secondary-color)] outline-[var(--secondary-color)] border rounded p-2 font-bold text-end"
                   />
                 </div>
                 <div style={{ minWidth: "100px" }}>
-                  <Typography variant="small" className="font-bold text-[#0154b8] text-end">
+                  <Typography variant="small" className="font-bold text-[var(--primary-color)] text-end">
                     {resultado.precio ? `${resultado.precio.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : ""}
                   </Typography>
                 </div>
                 <div style={{ minWidth: "100px" }}>
-                  <Typography variant="small" className="font-bold text-[#0154b8] text-end mr-[20px]">
+                  <Typography variant="small" className="font-bold text-[var(--primary-color)] text-end mr-[20px]">
                     {importe > 0 ? `${importe.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : ""}
                   </Typography>
                 </div>

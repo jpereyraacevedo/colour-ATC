@@ -59,38 +59,13 @@ const Header = () => {
               height={90}
               unoptimized={true}
               priority
-              style={{ width: "100px", height: "90px" }}
+              style={{ width: "100px", height: "100px" }}
             />
           </Link>
         </div>
 
         {/* Nav Links */}
-        <nav
-          className={`fixed top-0 left-0 w-full h-screen bg-gray-900 bg-opacity-90 flex flex-col justify-center items-center gap-6 text-xl transform ${isOpen ? "translate-x-0 z-[9999]" : "-translate-x-full"
-            } transition-transform duration-300 md:static md:flex-row md:bg-transparent md:h-auto md:w-auto md:translate-x-0 md:z-auto`}
-        >
-          <a
-            href="#home"
-            className="font-semibold leading-6 nav-links border-b-2 border-white hover:border-[#fc5273] duration-300"
-            onClick={closeMenu}
-          >
-            Home
-          </a>
-          <a
-            href="#about"
-            className="font-semibold leading-6 nav-links border-b-2 border-white hover:border-[#fc5273] duration-300"
-            onClick={closeMenu}
-          >
-            About
-          </a>
-          <a
-            href="#contact"
-            className="font-semibold leading-6 nav-links border-b-2 border-white hover:border-[#fc5273] duration-300"
-            onClick={closeMenu}
-          >
-            Contact
-          </a>
-        </nav>
+        
 
         {/* User Icon */}
         <div className="relative">
@@ -99,7 +74,7 @@ const Header = () => {
             onClick={toggleUserMenu}
           >
             <FaUser className="text-xl" />
-            <span>Hola <span className="font-bold">{userData?.username}</span></span>
+            <span>Hola <span className="font-bold text-[var(--primary-color)]">{userData?.username}</span></span>
           </div>
 
           {/* User Menu Popup */}
@@ -124,13 +99,13 @@ const Header = () => {
         </div>
 
         {/* Hamburger Menu */}
-        <button
+        {/* <button
           className={`text-2xl md:hidden focus:outline-none ${isOpen ? "z-[10000]" : "z-auto"
             }`}
           onClick={toggleMenu}
         >
           {isOpen ? <FaTimes /> : <div className="w-[100px] flex justify-end"><FaBars /></div> }
-        </button>
+        </button> */}
       </div>
 
       {/* Modal */}

@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { Input, Button } from "@material-tailwind/react";
+import { ImCheckmark } from "react-icons/im";
+
 
 const SelectProductos = ({ 
   subProductos, 
@@ -9,8 +12,10 @@ const SelectProductos = ({
   searchTerm, 
   setSearchTerm, 
   options,
+  precioBases,
   setPrecioBases,
-  onBaseSelect
+  onBaseSelect,
+  articulos
 }) => {
   const [filteredOptions, setFilteredOptions] = useState([]);
 
@@ -29,12 +34,33 @@ const SelectProductos = ({
     }
   };
 
+  // const handleSelectOption = (option) => {
+  //   setSearchTerm(option);
+  //   setFilteredOptions([]);
+  //   console.log("Opción seleccionada:", option);
+  //   onBaseSelect && onBaseSelect(option); // llamás al padre
+  // };
   const handleSelectOption = (option) => {
     setSearchTerm(option);
     setFilteredOptions([]);
     console.log("Opción seleccionada:", option);
-    onBaseSelect && onBaseSelect(option); // llamás al padre
+  
+    if (onBaseSelect) onBaseSelect(option);
+  
+    // Buscar el artículo correspondiente
+    const articuloSeleccionado = articulos.find(
+      (art) => art.NombreArticulo.toLowerCase() === option.toLowerCase()
+    );
+  
+    if (articuloSeleccionado) {
+      console.log("Precio encontrado:", articuloSeleccionado.CDO_CIVA);
+      setPrecioBases(articuloSeleccionado.CDO_CIVA);
+    } else {
+      console.log("Artículo no encontrado para:", option);
+      setPrecioBases(null);
+    }
   };
+  
   
 
   return (
@@ -66,16 +92,29 @@ const SelectProductos = ({
           </select>
 
           {selectedSubProducto && (
+            // Input para buscar bases temporalmente desactivado
             <div className="relative mx-2">
               <input
                 type="text"
                 value={searchTerm}
                 onChange={handleSearchChange}
                 placeholder="Buscar base..."
-                className="border-b border-[var(--primary-color)] rounded input-design my-2 h-[40px] p-2"
+                className="border-b border-[var(--primary-color)] rounded input-design my-2 h-[40px] p-2 hidden"
               />
+
+              {/* Input para ingresar el valor de las bases  */}
+              <div style={{ minWidth: "120px", display: "flex", alignItems: "center" }}>
+                  <Input
+                    type="number"
+                    value={precioBases || ''} // mostrar el valor si existe
+                    onChange={(e) => setPrecioBases(Number(e.target.value))}
+                    placeholder="Precio Bases"
+                    className="text-[var(--primary-color)] border border-[var(--primary-color)] rounded p-2 font-bold text-right outline-[var(--primary-color)] focus:outline-[var(--secondary-color)] focus:text-[var(--secondary-color)] focus:font-bold focus:border-[var(--secondary-color)]"
+                  />
+                  {/* <Button className="m-2 px-auto h-[40px] w-[75px] ov-btn-grow-skew w-fit"><ImCheckmark /></Button> */}
+                </div>
               {filteredOptions.length > 0 && (
-                <ul className="absolute bg-white border border-gray-300 w-full mt-1 max-h-40 overflow-y-auto shadow-lg z-10">
+                <ul id="listaBases" className="absolute bg-white border border-gray-300 w-full mt-1 max-h-40 overflow-y-auto shadow-lg z-10">
                   {filteredOptions.map((option, index) => (
                     <li
                       key={index}

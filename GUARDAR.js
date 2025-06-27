@@ -83,7 +83,7 @@ useEffect(() => {
 // };
 
 
-onClick = { borrarBusqueda }
+onClick = { Busqueda }
 
 //     import React, { useState, useEffect } from "react";
 // import axios from "axios";

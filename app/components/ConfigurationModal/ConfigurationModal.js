@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { SpinnerCircular } from 'spinners-react';
 import { BiSolidLike } from 'react-icons/bi';
+import { saveConfiguration } from '../../utils/saveConfiguration';
+
+
 
 const ConfigurationModal = ({ onClose }) => {
   const [inputs, setInputs] = useState({
@@ -40,84 +43,108 @@ const ConfigurationModal = ({ onClose }) => {
   };
 
   const handleSave = async () => {
-    console.log("🔵 Iniciando guardado...");
-    setIsSaving(true);
+  setIsSaving(true);
 
-    try {
-      const userDataString = localStorage.getItem('userData');
+  try {
+    const userDataString = localStorage.getItem('userData');
+    if (!userDataString) throw new Error('No se encontró `userData` en localStorage.');
+    const userData = JSON.parse(userDataString);
 
-      if (!userDataString) {
-        console.error("❌ No se encontró `userData` en localStorage.");
-        throw new Error("No se encontró `userData` en localStorage.");
-      }
+    await saveConfiguration({ inputs, userId: userData.id });
 
-      const userData = JSON.parse(userDataString);
-      console.log("🟢 Datos del usuario obtenidos de localStorage:", userData);
+    setIsSaving(false);
+    setIsSaved(true);
+    setTimeout(() => {
+      setIsSaved(false);
+      onClose();
+    }, 2000);
+  } catch (error) {
+    console.error("🔴 Error al guardar configuración:", error.message);
+    setIsSaving(false);
+  }
+};
+  // Si decides usar la función handleSave original, descomenta el siguiente bloque
+  // y asegúrate de que la función `saveConfigurations` esté definida correctamente.
 
-      if (!inputs || typeof inputs !== "object") {
-        console.error("❌ `inputs` no es válido:", inputs);
-        throw new Error("Los datos de configuración no son válidos.");
-      }
+  // const handleSave = async () => {
+  //   console.log("🔵 Iniciando guardado...");
+  //   setIsSaving(true);
 
-      console.log("🟡 Inputs actuales:", inputs);
+  //   try {
+  //     const userDataString = localStorage.getItem('userData');
 
-      const requestBody = {
-        userId: userData.id,
-        configurations: {
-          bases: inputs.bases ?? 0,
-          colorantes: inputs.colorantes ?? 0,
-        }
-      };
+  //     if (!userDataString) {
+  //       console.error("❌ No se encontró `userData` en localStorage.");
+  //       throw new Error("No se encontró `userData` en localStorage.");
+  //     }
 
-      console.log("📤 Enviando datos al backend:", requestBody);
+  //     const userData = JSON.parse(userDataString);
+  //     console.log("🟢 Datos del usuario obtenidos de localStorage:", userData);
 
-      const response = await fetch('http://192.168.0.240:5000/api/users/update-config', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody),
-      });
+  //     if (!inputs || typeof inputs !== "object") {
+  //       console.error("❌ `inputs` no es válido:", inputs);
+  //       throw new Error("Los datos de configuración no son válidos.");
+  //     }
 
-      console.log("📥 Respuesta del backend recibida");
+  //     console.log("🟡 Inputs actuales:", inputs);
 
-      let data;
-      try {
-        data = await response.json();
-      } catch (parseError) {
-        console.error("❌ Error al parsear respuesta del backend", parseError);
-        throw new Error("Error al procesar la respuesta del servidor.");
-      }
+  //     const requestBody = {
+  //       userId: userData.id,
+  //       configurations: {
+  //         bases: inputs.bases ?? 0,
+  //         colorantes: inputs.colorantes ?? 0,
+  //       }
+  //     };
 
-      console.log("🟢 Datos recibidos del backend:", data);
+  //     console.log("📤 Enviando datos al backend:", requestBody);
 
-      if (!response.ok) {
-        console.error("🔴 Error en la respuesta del backend:", data);
-        throw new Error(data.message || "Error al actualizar configuración.");
-      }
+  //     const response = await fetch('http://192.168.0.240:5000/api/users/update-config', {
+  //       method: 'PUT',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify(requestBody),
+  //     });
 
-      const updatedUserData = {
-        ...userData,
-        configurations: {
-          ...userData.configurations,
-          bases: data.configurations.bases,
-          colorantes: data.configurations.colorantes,
-        }
-      };
+  //     console.log("📥 Respuesta del backend recibida");
 
-      localStorage.setItem('userData', JSON.stringify(updatedUserData));
+  //     let data;
+  //     try {
+  //       data = await response.json();
+  //     } catch (parseError) {
+  //       console.error("❌ Error al parsear respuesta del backend", parseError);
+  //       throw new Error("Error al procesar la respuesta del servidor.");
+  //     }
 
-      console.log("✅ Configuración guardada en localStorage:", updatedUserData);
+  //     console.log("🟢 Datos recibidos del backend:", data);
 
-      setIsSaving(false);
-      setIsSaved(true);
-      setTimeout(() => {
-        setIsSaved(false);
-        onClose();
-      }, 2000);
-    } catch (error) {
-      console.error("🔴 Error al guardar:", error.message);
-      setIsSaving(false);
-    }
-  };
+  //     if (!response.ok) {
+  //       console.error("🔴 Error en la respuesta del backend:", data);
+  //       throw new Error(data.message || "Error al actualizar configuración.");
+  //     }
+
+  //     const updatedUserData = {
+  //       ...userData,
+  //       configurations: {
+  //         ...userData.configurations,
+  //         bases: data.configurations.bases,
+  //         colorantes: data.configurations.colorantes,
+  //       }
+  //     };
+
+  //     localStorage.setItem('userData', JSON.stringify(updatedUserData));
+
+  //     console.log("✅ Configuración guardada en localStorage:", updatedUserData);
+
+  //     setIsSaving(false);
+  //     setIsSaved(true);
+  //     setTimeout(() => {
+  //       setIsSaved(false);
+  //       onClose();
+  //     }, 2000);
+  //   } catch (error) {
+  //     console.error("🔴 Error al guardar:", error.message);
+  //     setIsSaving(false);
+  //   }
+  // };
 
   return (
     <div className="bg-white rounded-lg p-6 w-96 relative">
@@ -132,7 +159,7 @@ const ConfigurationModal = ({ onClose }) => {
 
       <div className="mb-4">
         <label className="block mb-1">
-          Ganancia a <span className="font-bold">bases</span>:
+          Ganancia a <span className="font-bold text-[var(--secondary-color)]">bases</span> (%):
         </label>
         <input
           type="number"
@@ -141,14 +168,14 @@ const ConfigurationModal = ({ onClose }) => {
           onChange={handleInputChange}
           min="0"
           max="100"
-          className="w-full border border-[var(--primary-color)] focus:outline-[var(--primary-color)] focus:border-[var(--primary-color)] rounded p-2"
+          className="w-full border border-[var(--primary-color)] focus:outline-[var(--secondary-color)] focus:text-[var(--secondary-color)] focus:font-bold focus:border-[var(--primary-color)] rounded p-2"
           placeholder="Ingresa ganancia a bases"
         />
       </div>
 
       <div className="mb-4">
         <label className="block mb-1">
-          Ganancia a <span className="font-bold">colorantes</span>:
+          Ganancia a <span className="font-bold text-[var(--secondary-color)]">colorantes</span> (%):
         </label>
         <input
           type="number"
@@ -157,7 +184,7 @@ const ConfigurationModal = ({ onClose }) => {
           onChange={handleInputChange}
           min="0"
           max="100"
-          className="w-full border border-[var(--primary-color)] focus:outline-[var(--primary-color)] focus:border-[var(--primary-color)] rounded p-2"
+          className="w-full border border-[var(--primary-color)] focus:outline-[var(--secondary-color)] focus:text-[var(--secondary-color)] focus:font-bold focus:border-[var(--primary-color)] rounded p-2"
           placeholder="Ingresa ganancia a colorantes"
         />
       </div>

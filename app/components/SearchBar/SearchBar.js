@@ -4,7 +4,7 @@ const SearchBar = ({ busqueda, handleInputChange, buscarSubProductos, borrarBusq
   <div className="flex flex-col m-2 items-center justify-center md:flex-row">
     <label>
       <Input
-        className="bg-[#fff] px-4 py-3 outline-none w-[220px] text-[#0154b8] font-bold rounded border-2 transition-colors duration-100 border-solid focus:border-[#0154b8] border-[#0154b8]"
+        className="bg-[#fff] px-4 py-3 w-[220px] text-[var(--primary-color)] focus:text-[var(--secondary-color)] font-bold rounded border-2 transition-colors duration-100 focus:border-[var(--secondary-color)] border-[var(--primary-color)] outline-[var(--secondary-color)]"
         type="text"
         value={busqueda}
         placeholder="Ingrese el código color"

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Fuse from 'fuse.js';
-import Swal from 'sweetalert2'
+import { useRouter } from 'next/navigation';
+import Swal from 'sweetalert2';
 import SearchBar from "../SearchBar/SearchBar";
 import SelectProductos from "../SelectProductos/SelectProductos";
 import TablaColorantes from "../TablaColorantes/TablaColorantes";
@@ -28,8 +29,16 @@ export default function InputContainer() {
     const [loading, setLoading] = useState(false); // Estado para controlar la carga
     const [tituloFormula, setTituloFormula] = useState("")
     const [tituloBase, setTituloBase] = useState("")
-
-
+    // Articulos de prueba 
+    const [articulos, setArticulos] = useState([]);
+    const token = localStorage.getItem("token");
+    const router = useRouter();
+    // Verifica si el token existe y es válido
+    useEffect(() => {
+        if (!token) {
+            router.push("/"); // Redirige a la página de inicio si no hay token
+        }
+    }, [token, router]);
     const handleInputChange = (event) => {
         const value = event.target.value;
         setBusqueda(value);
@@ -189,6 +198,13 @@ export default function InputContainer() {
     //     setFilteredArticulos(resultados);
     // }, [searchTerm, tablaArticulos]);
 
+    // Modificar la cantidad de colorantes en la tabla de resultados
+    const actualizarCantidadColorante = (index, nuevaCantidad) => {
+        const nuevosResultados = [...coloranteResultados];
+        nuevosResultados[index].cantidad = parseFloat(nuevaCantidad) || 0;
+        setColoranteResultados(nuevosResultados);
+    };
+
     useEffect(() => {
         // Opciones de Fuse.js
         const options = {
@@ -198,7 +214,7 @@ export default function InputContainer() {
 
         const fuse = new Fuse(tablaArticulos, options);
         const resultados = searchTerm ? fuse.search(searchTerm).map(result => result.item) : tablaArticulos;
-        
+
         setFilteredArticulos(resultados);
     }, [searchTerm, tablaArticulos]);
 
@@ -257,7 +273,7 @@ export default function InputContainer() {
         if (codigoBase) {
             const baseEncontrada = tablaBases.find(base => base.Codigo === codigoBase);
             if (baseEncontrada) {
-                setPrecioBases(baseEncontrada.Precio);
+                // setPrecioBases(baseEncontrada.Precio);
             } else {
                 console.warn(`No se encontró la base con el código: ${codigoBase}`);
             }
@@ -286,7 +302,7 @@ export default function InputContainer() {
     const handleBaseSeleccionada = (base) => {
         console.log("Base seleccionada en el padre:", base);
         // Acá podés guardar el valor en un estado, hacer una consulta, etc.
-      };
+    };
 
     return (
         <div className="mb-10 ancho-minimo">
@@ -294,11 +310,11 @@ export default function InputContainer() {
             {/* COMPONENTE BARRA DE BUSQUEDA */}
             <SearchBar busqueda={busqueda} handleInputChange={handleInputChange} buscarSubProductos={buscarSubProductos} borrarBusqueda={borrarBusqueda} />
             {/* COMPONENTE DE SELECT PRODUCTOS */}
-            <SelectProductos subProductos={subProductos} handleSubProductoSelect={handleSubProductoSelect} handleLitrosSelect={handleLitrosSelect} hasSearched={hasSearched} selectedSubProducto={selectedSubProducto} searchTerm={searchTerm} setSearchTerm={setSearchTerm} options={filteredArticulos.map(a => a.DESCRI)} precioBases={setPrecioBases} onBaseSelect={handleBaseSeleccionada} />
+            <SelectProductos subProductos={subProductos} handleSubProductoSelect={handleSubProductoSelect} handleLitrosSelect={handleLitrosSelect} hasSearched={hasSearched} selectedSubProducto={selectedSubProducto} searchTerm={searchTerm} setSearchTerm={setSearchTerm} options={filteredArticulos.map(a => a.DESCRI)} setPrecioBases={setPrecioBases} precioBases={precioBases} onBaseSelect={(base) => console.log("Base seleccionada:", base)} articulos={articulos} />
             {/* Titulo que se completa una vez obtenido el valor del select y de los litros */}
             <h2 className="text-center font-bold text-[#0154b8] text-3xl">{tituloFormula + " " + tituloBase}</h2>
             {/* COMPONENTE DE TABLA COLORANTES */}
-            <TablaColorantes coloranteResultados={coloranteResultados} generarFilasVacias={generarFilasVacias} />
+            <TablaColorantes coloranteResultados={coloranteResultados} generarFilasVacias={generarFilasVacias} actualizarCantidadColorante={actualizarCantidadColorante} />
             {/* CALCULO DE IMPORTE TOTAL */}
             <ImporteTotal precioBases={precioBases} totalImporte={totalImporte} />
         </div>
