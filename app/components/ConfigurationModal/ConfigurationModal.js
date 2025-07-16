@@ -98,7 +98,7 @@ const ConfigurationModal = ({ onClose }) => {
 
   //     console.log("📤 Enviando datos al backend:", requestBody);
 
-  //     const response = await fetch('http://192.168.0.240:5000/api/users/update-config', {
+  //     const response = await fetch('http://192.168.1.240:5000/api/users/update-config', {
   //       method: 'PUT',
   //       headers: { 'Content-Type': 'application/json' },
   //       body: JSON.stringify(requestBody),

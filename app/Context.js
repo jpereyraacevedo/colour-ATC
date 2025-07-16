@@ -20,7 +20,7 @@ export const ClassProvider = ({ children }) => {
       setUserData(JSON.parse(storedUserData)); // Carga datos del usuario desde localStorage
       setIsLoading(false);
     } else if (token) {
-      fetch("http://192.168.0.240:5000/api/users/me", {
+      fetch("http://192.168.1.240:5000/api/users/me", {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,

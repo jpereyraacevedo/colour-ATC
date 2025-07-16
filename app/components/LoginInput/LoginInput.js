@@ -18,7 +18,7 @@ const LoginInput = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://192.168.0.240:5000/api/users/login', {
+      const response = await fetch('http://192.168.1.240:5000/api/users/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -62,17 +62,17 @@ const LoginInput = () => {
             value={username} // Usar username aquí
             onChange={(e) => setUsername(e.target.value)}
             required
-            className="block w-full rounded-md border-0 p-1.5 shadow-sm sm:text-sm sm:leading-6 mt-1 input-login"
+            className="block w-full rounded-md border-0 p-1.5 shadow-sm sm:text-sm sm:leading-6 mt-1 input-login focus:text-[var(--primary-color)] focus:border-[var(--primary-color)] border-[var(--primary-color)] outline-[var(--primary-color)]"
           />
         </div>
         <div className="mt-1">
-          <label htmlFor="password" className="block text-sm font-medium leading-6 text-white font-extrabold">Contraseña</label>
+          <label htmlFor="password" className="block text-sm font-medium leading-6 text-white font-extrabold focus:text-[var(--secondary-color)]">Contraseña</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 mt-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-900 sm:text-sm sm:leading-6 input-password"
+            className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 mt-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-900 sm:text-sm sm:leading-6 input-password text-[var(--primary-color)] focus:border-[var(--primary-color)] border-[var(--primary-color)] outline-[var(--primary-color)]"
           />
         </div>
         <button type="submit" className="flex w-full justify-center rounded-md color-btn-atc px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 my-5">
