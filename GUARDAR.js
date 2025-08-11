@@ -125,9 +125,9 @@ onClick = { Busqueda }
 //             setLoading(true); // Inicia la carga
 //             try {
 //                 const [formulas, pigmentos, bases] = await Promise.all([
-//                     axios.get("http://192.168.1.240:5000/api/data/formulas"),
-//                     axios.get("http://192.168.1.240:5000/api/data/pigmentos"),
-//                     axios.get("http://192.168.1.240:5000/api/data/bases"),
+//                     axios.get("http://192.168.0.240:5000/api/data/formulas"),
+//                     axios.get("http://192.168.0.240:5000/api/data/pigmentos"),
+//                     axios.get("http://192.168.0.240:5000/api/data/bases"),
 //                 ]);
 //                 setTablaPinturas(formulas.data);
 //                 setTablaPigmentos(pigmentos.data);
