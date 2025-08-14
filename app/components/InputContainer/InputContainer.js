@@ -245,6 +245,7 @@ export default function InputContainer() {
         handleInputChange={handleInputChange}
         buscarSubProductos={buscarSubProductos}
         borrarBusqueda={borrarBusqueda}
+        // tituloFormula={tituloFormula}
       />
 
       <SelectProductos
@@ -262,7 +263,7 @@ export default function InputContainer() {
         articulos={articulos}
       />
 
-      <h2 className="text-center font-bold text-[#0154b8] text-3xl">
+      <h2 className="text-center font-bold text-[#0154b8] text-3xl my-5">
         {tituloFormula + " " + tituloBase}
       </h2>
 
