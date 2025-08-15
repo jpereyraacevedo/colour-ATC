@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { Input, Button } from "@material-tailwind/react";
-import { ImCheckmark } from "react-icons/im";
-
 
 const SelectProductos = ({ 
   subProductos, 
@@ -34,12 +32,6 @@ const SelectProductos = ({
     }
   };
 
-  // const handleSelectOption = (option) => {
-  //   setSearchTerm(option);
-  //   setFilteredOptions([]);
-  //   console.log("Opción seleccionada:", option);
-  //   onBaseSelect && onBaseSelect(option); // llamás al padre
-  // };
   const handleSelectOption = (option) => {
     setSearchTerm(option);
     setFilteredOptions([]);

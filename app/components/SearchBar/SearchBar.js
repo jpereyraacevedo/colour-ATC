@@ -9,7 +9,7 @@ const SearchBar = ({
 }) => {
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      e.preventDefault(); // Evita que un form se envíe si lo hubiera
+      e.preventDefault(); 
       buscarSubProductos();
     }
   };
@@ -24,7 +24,7 @@ const SearchBar = ({
             value={busqueda}
             placeholder="Ingrese el código color"
             onChange={handleInputChange}
-            onKeyDown={handleKeyDown} // ← acá escuchamos el Enter
+            onKeyDown={handleKeyDown} 
           />
         </label>
         <div>
